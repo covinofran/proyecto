@@ -28,7 +28,11 @@ public class VentanaInicioSesion {
 				String usuario = usuarioTextField.getText();
 				char[] contraseña = contraseñaField.getPassword();
 
-				// Verificar las credenciales (en este ejemplo, usuario=admin, contraseña=admin)
+				/*
+				 *  POR AHORA SOLO TESTEA SI EL USUARIO QUE INGRESO ES ADMIN ADMIN, FALTA IMPLEMENTAR QUE VERIFIQUE EL USER
+				 * EN LA BASE DE DATOS, TRAERLO, DESENCRIPTAR Y HACER LA COMPROBACION DE DATOS.
+				 * 
+				 * */
 				if (usuario.equals("admin") && new String(contraseña).equals("admin")) {
 					mostrarVentanaPrincipal(usuario);
 				} else {
@@ -61,7 +65,12 @@ public class VentanaInicioSesion {
 		JFrame ventanaPrincipal = new JFrame("Sesión Iniciada - Usuario: " + usuario);
 		ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventanaPrincipal.setSize(800, 600);
-
+		/*
+		 * 
+		 * FALTA CORREGIR TODOS LOS ERRORES ANTES DE IMPLEMENTAR ESTO, COMO CARGAR BIEN LOS USUARIO E IMPLEMENTAR LOCALES
+		 * CON SUS RESPECTIVOS ARTICULOS
+		 * 
+		 * */
 		// Aquí puedes agregar los elementos que deseas mostrar en la ventana principal,
 		// como la imagen y otros componentes.
 		ventanaPrincipal.setLocationRelativeTo(null);

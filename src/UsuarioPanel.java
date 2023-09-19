@@ -13,6 +13,10 @@ import javax.swing.JTextField;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class UsuarioPanel extends JPanel {
+	/*
+	 * NO SABEMOS PORQUE USUARIOPANEL DA ESE ERROR AUN, SI SACAMOS EL EXTENDS JPANEL NO LO TIRA Y DEBERIAMOS AGREGAR FRAME. 
+	 * A TODOS LOS METODOS PERO DA ERROR EL METODO BROWSEIMAGE()
+	 * */
 	private JComboBox<String> tipoComboBox;
 	private JTextField nombreTextField;
 	private JPasswordField contrasenaField;
@@ -65,13 +69,25 @@ public class UsuarioPanel extends JPanel {
 				String contra = new String(contrasenaField.getPassword()); 
 				String hashed = BCrypt.hashpw(contra, salt);
 				String seleccion = (String) tipoComboBox.getSelectedItem();
-				
+				/*
+				 * LA VARIABLE CONTRA Y HASHED SON USADAS PARA TESTEAR SI EL ENCRIPTADO FUNCIONA, HAY QUE ACOMODAR
+				 * LA IMPLEMENTACION DE ESTO, EL IF SIGUIENTE ESTA PARA IMPRIMIR EN CONSOLA UNICAMENTE
+				 * 
+				 * */
 				if (BCrypt.checkpw(contra, hashed))
 					System.out.println("It matches");
 				else
 					System.out.println("It does not match");
 				
 				
+
+				
+				/*
+				 * PRINTS PARA VER EN CONSOLA LOS DATOS CARGADOS UNICAMENTE
+				 * VER COMO CARGA LOS DATOS Y LAS MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO PARA 
+				 * EDITAR LOS MISMO
+				 * 
+				 * */
 				
 				
 				if ("Cliente".equals(seleccion)) {

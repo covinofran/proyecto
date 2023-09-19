@@ -7,7 +7,18 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 	private static DatabaseConnection instancia;
 	private Connection conexion;
-
+	
+	
+	/*
+	 * 
+	 * DECLARADA COMO CONSTANTES LOS DATOS DE ACCESO A MYSQL
+	 * FALTARIA ENCRIPTARLOS A TODOS!?!?
+	 * SI ES NECESARIO O NO, AVERIGUAR Y PREGUNTAR ESO
+	 * 
+	 * */
+	
+	
+	
 	private static final String URL = "jdbc:mysql://localhost:3306/proyecto";
 	private static final String USUARIO = "root";
 	private static final String CONTRASEÑA = "123123";
@@ -69,6 +80,14 @@ public class DatabaseConnection {
 
 	public void guardarUser(Usuario usuario) {
 		try {
+			/*
+			 * ACA FALLA PORQUE SI AGREGO UN ID QUE YA EXISTE ME AGREGA LA IMAGEN Y DESPUES CONTROLA SI EXISTE EL ID,
+			 * POR LO TANTO LA IMAGEN SE AGREGA PERO NO SE AGREGA EL USUARIO. QUEDARIA UNA IMAGEN AL PEDO CARGADA
+			 * SOLUCIONAR ESTE PROBLEMA DE ALGUNA FORMA, LA MAS PRACTICA SERIA AGRENDANDO LA RUTA DE LA IMAGEN
+			 * DIRECTAMENTE AL USUARIO PERO PARA HACERLO MAS DIFICIL Y PROBAR DISTINTAS FORMAS 
+			 * BUSCAR COMO SE SOLUCIONA ASI
+			 * 
+			 * */
 			// Primero, inserta la imagen en la tabla de imágenes
 			String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
 			PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);
