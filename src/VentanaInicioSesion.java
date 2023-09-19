@@ -36,6 +36,11 @@ public class VentanaInicioSesion{
                 }
             }
         });
+        contraseñaField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                iniciarSesionButton.doClick(); // Simula la acción del botón al presionar "Enter" en el campo de texto
+            }
+        });
 
         panel.add(usuarioLabel);
         panel.add(usuarioTextField);
