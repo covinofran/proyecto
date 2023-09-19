@@ -8,13 +8,15 @@ public class DatabaseConnection {
 	private static DatabaseConnection instancia;
 	private Connection conexion;
 
+	private static final String URL = "jdbc:mysql://localhost:3306/proyecto";
+	private static final String USUARIO = "root";
+	private static final String CONTRASEÑA = "123123";
+
 	private DatabaseConnection() {
+
 		try {
-			// Establece la conexión a la base de datos MySQL
-			String url = "jdbc:mysql://localhost:3306/proyecto";
-			String usuario = "root";
-			String contraseña = "123123";
-			conexion = DriverManager.getConnection(url, usuario, contraseña);
+
+			conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error al conectar a la base de datos");
@@ -64,43 +66,44 @@ public class DatabaseConnection {
 		}
 
 	}
+
 	public void guardarUser(Usuario usuario) {
-	    try {
-	        // Primero, inserta la imagen en la tabla de imágenes
-	        String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
-	        PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);
-	        
-	        Imagen imagen = usuario.getImagen();
-	        preparedStatementImagen.setString(1, imagen.getNombre());
-	        preparedStatementImagen.setString(2, imagen.getUrl());
-	        
-	        preparedStatementImagen.executeUpdate();
-	        
-	        // Luego, obtén el ID de la imagen recién insertada
-	        String sqlMaxId = "SELECT MAX(idimagen) AS max_id FROM imagen";
-	        PreparedStatement preparedStatementMaxId = conexion.prepareStatement(sqlMaxId);
-	        ResultSet resultSet = preparedStatementMaxId.executeQuery();
-	        
-	        int idImagen = 0;
-	        if (resultSet.next()) {
-	            idImagen = resultSet.getInt("max_id");
-	        }
-	        
-	        // Ahora, inserta el usuario en la tabla de usuarios
-	        String sqlUser = "INSERT INTO user (iduser, passwd, idimg, salt) VALUES (?, ?, ?, ?)";
-	        PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
-	        
-	        preparedStatementUser.setString(1, usuario.getId());
-	        preparedStatementUser.setString(2, usuario.getContraseña());
-	        preparedStatementUser.setInt(3, idImagen);
-	        preparedStatementUser.setString(4, usuario.getSalt());
-	        preparedStatementUser.executeUpdate();
-	        
-	        System.out.println("Usuario guardado en la base de datos correctamente.");
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        System.err.println("Error al guardar el usuario en la base de datos.");
-	    }
+		try {
+			// Primero, inserta la imagen en la tabla de imágenes
+			String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
+			PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);
+
+			Imagen imagen = usuario.getImagen();
+			preparedStatementImagen.setString(1, imagen.getNombre());
+			preparedStatementImagen.setString(2, imagen.getUrl());
+
+			preparedStatementImagen.executeUpdate();
+
+			// Luego, obtén el ID de la imagen recién insertada
+			String sqlMaxId = "SELECT MAX(idimagen) AS max_id FROM imagen";
+			PreparedStatement preparedStatementMaxId = conexion.prepareStatement(sqlMaxId);
+			ResultSet resultSet = preparedStatementMaxId.executeQuery();
+
+			int idImagen = 0;
+			if (resultSet.next()) {
+				idImagen = resultSet.getInt("max_id");
+			}
+
+			// Ahora, inserta el usuario en la tabla de usuarios
+			String sqlUser = "INSERT INTO user (iduser, passwd, idimg, salt) VALUES (?, ?, ?, ?)";
+			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
+
+			preparedStatementUser.setString(1, usuario.getId());
+			preparedStatementUser.setString(2, usuario.getContraseña());
+			preparedStatementUser.setInt(3, idImagen);
+			preparedStatementUser.setString(4, usuario.getSalt());
+			preparedStatementUser.executeUpdate();
+
+			System.out.println("Usuario guardado en la base de datos correctamente.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("Error al guardar el usuario en la base de datos.");
+		}
 	}
 
 }

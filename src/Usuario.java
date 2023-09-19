@@ -3,11 +3,12 @@ public abstract class Usuario {
 	private String contraseña;
 	private Imagen imagen;
 	private String salt;
+
 	public Usuario(String id, String contraseña, Imagen imagen, String salt) {
 		this.id = id;
 		this.contraseña = contraseña;
 		this.imagen = imagen;
-		this.salt= salt;
+		this.salt = salt;
 	}
 
 	public String getId() {
@@ -41,7 +42,5 @@ public abstract class Usuario {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-
-	
 
 }
