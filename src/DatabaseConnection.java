@@ -4,30 +4,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 public class DatabaseConnection {
 	private static DatabaseConnection instancia;
 	private Connection conexion;
-	
-	
+
 	/*
 	 * 
-	 * DECLARADA COMO CONSTANTES LOS DATOS DE ACCESO A MYSQL
-	 * FALTARIA ENCRIPTARLOS A TODOS!?!?
-	 * SI ES NECESARIO O NO, AVERIGUAR Y PREGUNTAR ESO
+	 * DECLARADA COMO CONSTANTES LOS DATOS DE ACCESO A MYSQL FALTARIA ENCRIPTARLOS A
+	 * TODOS!?!? SI ES NECESARIO O NO, AVERIGUAR Y PREGUNTAR ESO
 	 * 
-	 * */
-	
-	
-	
+	 */
+
 	private static final String URL = "jdbc:mysql://localhost:3306/proyecto";
 	private static final String USUARIO = "root";
-	private static final String CONTRASEÑA = "123123";
+	private static final String CONTRA = "123123";
 
 	private DatabaseConnection() {
 
 		try {
 
-			conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
+			conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error al conectar a la base de datos");
@@ -45,29 +46,39 @@ public class DatabaseConnection {
 		return conexion;
 	}
 
-	public boolean autenticarUsuario(String nombreUsuario, String contraseña) {
-		// Realiza una consulta a la base de datos para verificar las credenciales del
-		// usuario
-		// Retorna true si la autenticación es exitosa, de lo contrario false
+	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
-			String consulta = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND contraseña = ?";
+			String consulta = "SELECT passwd FROM user WHERE iduser = ?";
 			PreparedStatement statement = conexion.prepareStatement(consulta);
 			statement.setString(1, nombreUsuario);
-			statement.setString(2, contraseña);
+
 			ResultSet resultSet = statement.executeQuery();
 
-			return resultSet.next(); // Si hay un resultado, las credenciales son válidas
+			if (resultSet.next()) {
+				String hashAlmacenado = resultSet.getString("passwd");
+
+				if (BCrypt.checkpw(contraseña, hashAlmacenado)) {
+					System.out.println("Autenticación exitosa");
+					return true;
+				} else {
+					System.out.println("Contraseña incorrecta");
+					JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			} else {
+				System.out.println("Usuario no encontrado");
+				JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false; // En caso de error, la autenticación falla
+			return false;
 		}
 	}
 
 	public void close() {
 		try {
-			// Tu código de acceso a la base de datos aquí
 
-			// Cerrar la conexión cuando hayas terminado
 			if (conexion != null && !conexion.isClosed()) {
 				conexion.close();
 				System.out.println("Conexión a la base de datos cerrada.");
@@ -81,14 +92,15 @@ public class DatabaseConnection {
 	public void guardarUser(Usuario usuario) {
 		try {
 			/*
-			 * ACA FALLA PORQUE SI AGREGO UN ID QUE YA EXISTE ME AGREGA LA IMAGEN Y DESPUES CONTROLA SI EXISTE EL ID,
-			 * POR LO TANTO LA IMAGEN SE AGREGA PERO NO SE AGREGA EL USUARIO. QUEDARIA UNA IMAGEN AL PEDO CARGADA
-			 * SOLUCIONAR ESTE PROBLEMA DE ALGUNA FORMA, LA MAS PRACTICA SERIA AGRENDANDO LA RUTA DE LA IMAGEN
-			 * DIRECTAMENTE AL USUARIO PERO PARA HACERLO MAS DIFICIL Y PROBAR DISTINTAS FORMAS 
-			 * BUSCAR COMO SE SOLUCIONA ASI
+			 * ACA FALLA PORQUE SI AGREGO UN ID QUE YA EXISTE ME AGREGA LA IMAGEN Y DESPUES
+			 * CONTROLA SI EXISTE EL ID, POR LO TANTO LA IMAGEN SE AGREGA PERO NO SE AGREGA
+			 * EL USUARIO. QUEDARIA UNA IMAGEN AL PEDO CARGADA SOLUCIONAR ESTE PROBLEMA DE
+			 * ALGUNA FORMA, LA MAS PRACTICA SERIA AGRENDANDO LA RUTA DE LA IMAGEN
+			 * DIRECTAMENTE AL USUARIO PERO PARA HACERLO MAS DIFICIL Y PROBAR DISTINTAS
+			 * FORMAS BUSCAR COMO SE SOLUCIONA ASI
 			 * 
-			 * */
-			// Primero, inserta la imagen en la tabla de imágenes
+			 */
+			// inserta la imagen en la tabla de imágenes
 			String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
 			PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);
 
@@ -98,7 +110,7 @@ public class DatabaseConnection {
 
 			preparedStatementImagen.executeUpdate();
 
-			// Luego, obtén el ID de la imagen recién insertada
+			// ID de la imagen recién insertada
 			String sqlMaxId = "SELECT MAX(idimagen) AS max_id FROM imagen";
 			PreparedStatement preparedStatementMaxId = conexion.prepareStatement(sqlMaxId);
 			ResultSet resultSet = preparedStatementMaxId.executeQuery();
@@ -108,7 +120,7 @@ public class DatabaseConnection {
 				idImagen = resultSet.getInt("max_id");
 			}
 
-			// Ahora, inserta el usuario en la tabla de usuarios
+			// inserta el usuario en la tabla de usuarios
 			String sqlUser = "INSERT INTO user (iduser, passwd, idimg, salt) VALUES (?, ?, ?, ?)";
 			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
 

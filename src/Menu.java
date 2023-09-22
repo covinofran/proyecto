@@ -4,12 +4,12 @@ import java.awt.event.ActionListener;
 
 public class Menu {
 	public Menu() {
-		// Crear una ventana principal
+		// Crea una ventana principal
 		JFrame frame = new JFrame("Menú de Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 150);
 
-		// Crear un panel para colocar los botones
+		// Crea un panel para colocar los botones
 		JPanel panel = new JPanel();
 		frame.add(panel);
 
@@ -38,14 +38,11 @@ public class Menu {
 			}
 		});
 
-		// Agregar los botones al panel
+		// Agrega los botones al panel
 		panel.add(crearUsuarioButton);
 		panel.add(iniciarSesionButton);
 
-		// Centrar la ventana en la pantalla
 		frame.setLocationRelativeTo(null);
-
-		// Mostrar la ventana
 		frame.setVisible(true);
 	}
 

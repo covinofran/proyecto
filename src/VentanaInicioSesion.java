@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,8 +8,10 @@ public class VentanaInicioSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
+	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
 	public VentanaInicioSesion() {
+
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 150);
@@ -26,19 +29,26 @@ public class VentanaInicioSesion {
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String usuario = usuarioTextField.getText();
-				char[] contraseña = contraseñaField.getPassword();
+				String contra = new String(contraseñaField.getPassword());
+
+				// ACA COAMPRUEBA SI EL USUARIO Y LA CONTRASEÑA ESTAN BIEN
+
+				if (conexion.autenticarUsuario(usuario, contra, frame)) {
+					mostrarVentanaPrincipal(usuario);
+				}
 
 				/*
-				 *  POR AHORA SOLO TESTEA SI EL USUARIO QUE INGRESO ES ADMIN ADMIN, FALTA IMPLEMENTAR QUE VERIFIQUE EL USER
-				 * EN LA BASE DE DATOS, TRAERLO, DESENCRIPTAR Y HACER LA COMPROBACION DE DATOS.
+				 * POR AHORA SOLO TESTEA SI EL USUARIO QUE INGRESO ES ADMIN ADMIN, FALTA
+				 * IMPLEMENTAR QUE VERIFIQUE EL USER EN LA BASE DE DATOS, TRAERLO, DESENCRIPTAR
+				 * Y HACER LA COMPROBACION DE DATOS.
 				 * 
-				 * */
-				if (usuario.equals("admin") && new String(contraseña).equals("admin")) {
-					mostrarVentanaPrincipal(usuario);
-				} else {
-					JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				 */
+				/*
+				 * if (usuario.equals("admin") && new String(contra).equals("admin")) {
+				 * mostrarVentanaPrincipal(usuario); } else {
+				 * JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error",
+				 * JOptionPane.ERROR_MESSAGE); }
+				 */
 			}
 		});
 		contraseñaField.addActionListener(new ActionListener() {
@@ -60,6 +70,7 @@ public class VentanaInicioSesion {
 	}
 
 	private void mostrarVentanaPrincipal(String usuario) {
+		conexion.close(); // cierra la conexion con la db
 		frame.dispose(); // Cierra la ventana de inicio de sesión
 
 		JFrame ventanaPrincipal = new JFrame("Sesión Iniciada - Usuario: " + usuario);
@@ -67,12 +78,10 @@ public class VentanaInicioSesion {
 		ventanaPrincipal.setSize(800, 600);
 		/*
 		 * 
-		 * FALTA CORREGIR TODOS LOS ERRORES ANTES DE IMPLEMENTAR ESTO, COMO CARGAR BIEN LOS USUARIO E IMPLEMENTAR LOCALES
-		 * CON SUS RESPECTIVOS ARTICULOS
+		 * FALTA CORREGIR TODOS LOS ERRORES ANTES DE IMPLEMENTAR ESTO, COMO CARGAR BIEN
+		 * LOS USUARIO E IMPLEMENTAR LOCALES CON SUS RESPECTIVOS ARTICULOS
 		 * 
-		 * */
-		// Aquí puedes agregar los elementos que deseas mostrar en la ventana principal,
-		// como la imagen y otros componentes.
+		 */
 		ventanaPrincipal.setLocationRelativeTo(null);
 		ventanaPrincipal.setVisible(true);
 	}
