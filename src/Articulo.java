@@ -2,13 +2,13 @@ public class Articulo {
 	private String nombre;
 	private double precio;
 	private int id;
-	private Imagen imagen;
+	private String url;
 
-	public Articulo(String nombre, double precio, int id, Imagen imagen) {
+	public Articulo(String nombre, double precio, int id, String url) {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.id = id;
-		this.imagen = imagen;
+		this.url = url;
 	}
 
 	public String getNombre() {
@@ -35,12 +35,12 @@ public class Articulo {
 		this.id = id;
 	}
 
-	public Imagen getImagen() {
-		return imagen;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setImagen(Imagen imagen) {
-		this.imagen = imagen;
+	public void setImagen(String url) {
+		this.url = url;
 	}
 
 }

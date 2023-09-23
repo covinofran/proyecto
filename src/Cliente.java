@@ -1,6 +1,6 @@
 public class Cliente extends Usuario {
-	public Cliente(String id, String contraseña, Imagen imagen, String salt) {
-		super(id, contraseña, imagen, salt);
+	public Cliente(String id, String contraseña, String url, String salt) {
+		super(id, contraseña, url, salt);
 
 	}
 

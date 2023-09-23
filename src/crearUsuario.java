@@ -18,13 +18,14 @@ public class crearUsuario {
 	private JPasswordField contrasenaField;
 	private JButton cargarImagenButton;
 	private JButton enviarButton;
-	private Imagen img;
+	private JButton volverButton;
+	private String url;
 	private JFrame frame;
 	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
 	public crearUsuario() {
 
-		frame = new JFrame("Iniciar Sesión");
+		frame = new JFrame("Crear Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridLayout(5, 2));
 
@@ -81,35 +82,37 @@ public class crearUsuario {
 				if ("Cliente".equals(seleccion)) {
 					// Acciones para el tipo de usuario "Cliente"
 					UsuarioFactory clienteFactory = new ClienteFactory();
-					Usuario cliente = clienteFactory.crearUsuario(usuario, hashed, img, salt);
-
+					Usuario cliente = clienteFactory.crearUsuario(usuario, hashed, url, salt);
 					// Imprimir información de los usuarios
 					System.out.println("Usuario Cliente:");
 					System.out.println("ID: " + cliente.getId());
 					System.out.println("Contraseña: " + cliente.getContraseña());
-					Imagen imagenCliente = cliente.getImagen();
-					System.out.println("Imagen:");
-					System.out.println("  Nombre: " + imagenCliente.getNombre());
-					System.out.println("  Ruta: " + imagenCliente.getUrl());
+					System.out.println("Ruta Iamagen: " + cliente.getUrl());
 					conexion.guardarUser(cliente);
 				} else if ("Local".equals(seleccion)) {
 					// Acciones para el tipo de usuario "Local"
 					System.out.println("Acciones para Local");
 					UsuarioFactory localFactory = new LocalFactory();
-					Usuario local = localFactory.crearUsuario(usuario, hashed, img, salt);
+					Usuario local = localFactory.crearUsuario(usuario, hashed, url, salt);
 					System.out.println("\nUsuario Local:");
 					System.out.println("ID: " + local.getId());
 					System.out.println("Contraseña: " + local.getContraseña());
-					Imagen imagenLocal = local.getImagen();
-					System.out.println("Imagen:");
-					System.out.println("  Nombre: " + imagenLocal.getNombre());
-					System.out.println("  Ruta: " + imagenLocal.getUrl());
+					System.out.println("Ruta Imangen: " + local.getUrl());
 					conexion.guardarUser(local);
 				}
 			}
 		});
+		volverButton = new JButton("Volver");
+		volverButton.addActionListener((ActionListener) new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new Menu();
+			}
+		});
+
 		frame.add(cargarImagenButton);
 		frame.add(enviarButton);
+		frame.add(volverButton);
 		frame.setVisible(true);
 		frame.setSize(400, 300);
 		frame.setLocationRelativeTo(null);
@@ -119,19 +122,9 @@ public class crearUsuario {
 		JFileChooser fileChooser = new JFileChooser();
 		int result = fileChooser.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			String imagePath = fileChooser.getSelectedFile().getPath();
-			String imageName = fileChooser.getSelectedFile().getName();
-			// Elimina la extensión del nombre del archivo
-			imageName = removerExtension(imageName);
-			img = new Imagen(imageName, imagePath);
+			url = fileChooser.getSelectedFile().getPath();
+
 		}
 	}
 
-	private String removerExtension(String imagen) {
-		int ultimoPunto = imagen.lastIndexOf('.');
-		if (ultimoPunto > 0) {
-			imagen = imagen.substring(0, ultimoPunto);
-		}
-		return imagen;
-	}
 }

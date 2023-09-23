@@ -16,9 +16,9 @@ public class DatabaseConnection {
 	private DatabaseConnection() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/proyecto";
-			String usuario = "root";
-			String contra = "123123";
-			conexion = DriverManager.getConnection(url, usuario, contra);
+			String user = "root";
+			String password = "123123";
+			conexion = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error al conectar a la base de datos");
@@ -38,7 +38,7 @@ public class DatabaseConnection {
 
 	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
-			String consulta = "SELECT passwd FROM user WHERE iduser = ?";
+			String consulta = "SELECT passwd FROM usuario WHERE idusuario = ?";
 			PreparedStatement statement = conexion.prepareStatement(consulta);
 			statement.setString(1, nombreUsuario);
 
@@ -80,42 +80,13 @@ public class DatabaseConnection {
 
 	public void guardarUser(Usuario usuario) {
 		try {
-			/*
-			 * ACA FALLA PORQUE SI AGREGO UN ID QUE YA EXISTE ME AGREGA LA IMAGEN Y DESPUES
-			 * CONTROLA SI EXISTE EL ID, POR LO TANTO LA IMAGEN SE AGREGA PERO NO SE AGREGA
-			 * EL USUARIO. QUEDARIA UNA IMAGEN AL PEDO CARGADA SOLUCIONAR ESTE PROBLEMA DE
-			 * ALGUNA FORMA, LA MAS PRACTICA SERIA AGRENDANDO LA RUTA DE LA IMAGEN
-			 * DIRECTAMENTE AL USUARIO PERO PARA HACERLO MAS DIFICIL Y PROBAR DISTINTAS
-			 * FORMAS BUSCAR COMO SE SOLUCIONA ASI
-			 */
-
-			// inserta la imagen en la tabla de imágenes
-			String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
-			PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);
-
-			Imagen imagen = usuario.getImagen();
-			preparedStatementImagen.setString(1, imagen.getNombre());
-			preparedStatementImagen.setString(2, imagen.getUrl());
-
-			preparedStatementImagen.executeUpdate();
-
-			// ID de la imagen recién insertada
-			String sqlMaxId = "SELECT MAX(idimagen) AS max_id FROM imagen";
-			PreparedStatement preparedStatementMaxId = conexion.prepareStatement(sqlMaxId);
-			ResultSet resultSet = preparedStatementMaxId.executeQuery();
-
-			int idImagen = 0;
-			if (resultSet.next()) {
-				idImagen = resultSet.getInt("max_id");
-			}
-
 			// inserta el usuario en la tabla de usuarios
-			String sqlUser = "INSERT INTO user (iduser, passwd, idimg, salt) VALUES (?, ?, ?, ?)";
+			String sqlUser = "INSERT INTO usuario (idusuario, passwd, url, salt) VALUES (?, ?, ?, ?)";
 			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
 
 			preparedStatementUser.setString(1, usuario.getId());
 			preparedStatementUser.setString(2, usuario.getContraseña());
-			preparedStatementUser.setInt(3, idImagen);
+			preparedStatementUser.setString(3, usuario.getUrl());
 			preparedStatementUser.setString(4, usuario.getSalt());
 			preparedStatementUser.executeUpdate();
 

@@ -36,19 +36,6 @@ public class iniciarSesion {
 				if (conexion.autenticarUsuario(usuario, contra, frame)) {
 					mostrarVentanaPrincipal(usuario);
 				}
-
-				/*
-				 * POR AHORA SOLO TESTEA SI EL USUARIO QUE INGRESO ES ADMIN ADMIN, FALTA
-				 * IMPLEMENTAR QUE VERIFIQUE EL USER EN LA BASE DE DATOS, TRAERLO, DESENCRIPTAR
-				 * Y HACER LA COMPROBACION DE DATOS.
-				 * 
-				 */
-				/*
-				 * if (usuario.equals("admin") && new String(contra).equals("admin")) {
-				 * mostrarVentanaPrincipal(usuario); } else {
-				 * JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error",
-				 * JOptionPane.ERROR_MESSAGE); }
-				 */
 			}
 		});
 		contraseñaField.addActionListener(new ActionListener() {
@@ -56,14 +43,21 @@ public class iniciarSesion {
 				iniciarSesionButton.doClick(); // Simula la acción del botón al presionar "Enter" en el campo de texto
 			}
 		});
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener((ActionListener) new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new Menu();
+			}
+		});
 
 		panel.add(usuarioLabel);
 		panel.add(usuarioTextField);
 		panel.add(contraseñaLabel);
 		panel.add(contraseñaField);
-		panel.add(new JLabel()); // Espacio en blanco
+		panel.add(volverButton);
 		panel.add(iniciarSesionButton);
-
+		
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

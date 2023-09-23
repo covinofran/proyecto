@@ -1,13 +1,13 @@
 public abstract class Usuario {
 	private String id;
 	private String contraseña;
-	private Imagen imagen;
+	private String url;
 	private String salt;
 
-	public Usuario(String id, String contraseña, Imagen imagen, String salt) {
+	public Usuario(String id, String contraseña, String url, String salt) {
 		this.id = id;
 		this.contraseña = contraseña;
-		this.imagen = imagen;
+		this.url = url;
 		this.salt = salt;
 	}
 
@@ -27,12 +27,12 @@ public abstract class Usuario {
 		this.contraseña = contraseña;
 	}
 
-	public Imagen getImagen() {
-		return imagen;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setImagen(Imagen imagen) {
-		this.imagen = imagen;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String getSalt() {

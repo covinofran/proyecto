@@ -4,8 +4,8 @@ import java.util.List;
 public class Local extends Usuario {
 	private List<Articulo> articulos;
 
-	public Local(String id, String contraseña, Imagen imagen, String salt) {
-		super(id, contraseña, imagen, salt);
+	public Local(String id, String contraseña, String url, String salt) {
+		super(id, contraseña, url, salt);
 		this.articulos = new ArrayList<>();
 	}
 
