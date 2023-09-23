@@ -13,29 +13,19 @@ public class DatabaseConnection {
 	private static DatabaseConnection instancia;
 	private Connection conexion;
 
-	/*
-	 * 
-	 * DECLARADA COMO CONSTANTES LOS DATOS DE ACCESO A MYSQL FALTARIA ENCRIPTARLOS A
-	 * TODOS!?!? SI ES NECESARIO O NO, AVERIGUAR Y PREGUNTAR ESO
-	 * 
-	 */
-
-	private static final String URL = "jdbc:mysql://localhost:3306/proyecto";
-	private static final String USUARIO = "root";
-	private static final String CONTRA = "123123";
-
 	private DatabaseConnection() {
-
 		try {
-
-			conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+			String url = "jdbc:mysql://localhost:3306/proyecto";
+			String usuario = "root";
+			String contra = "123123";
+			conexion = DriverManager.getConnection(url, usuario, contra);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error al conectar a la base de datos");
 		}
 	}
 
-	public static DatabaseConnection getInstancia() {
+	public static synchronized DatabaseConnection getInstancia() {
 		if (instancia == null) {
 			instancia = new DatabaseConnection();
 		}
@@ -86,7 +76,6 @@ public class DatabaseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void guardarUser(Usuario usuario) {
@@ -98,8 +87,8 @@ public class DatabaseConnection {
 			 * ALGUNA FORMA, LA MAS PRACTICA SERIA AGRENDANDO LA RUTA DE LA IMAGEN
 			 * DIRECTAMENTE AL USUARIO PERO PARA HACERLO MAS DIFICIL Y PROBAR DISTINTAS
 			 * FORMAS BUSCAR COMO SE SOLUCIONA ASI
-			 * 
 			 */
+
 			// inserta la imagen en la tabla de imágenes
 			String sqlImagen = "INSERT INTO imagen (nombre, ruta) VALUES (?, ?)";
 			PreparedStatement preparedStatementImagen = conexion.prepareStatement(sqlImagen);

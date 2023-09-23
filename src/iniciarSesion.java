@@ -4,13 +4,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VentanaInicioSesion {
+public class iniciarSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
 	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
-	public VentanaInicioSesion() {
+	public iniciarSesion() {
 
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

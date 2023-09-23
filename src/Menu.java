@@ -7,23 +7,12 @@ public class Menu {
 		// Crea una ventana principal
 		JFrame frame = new JFrame("Menú de Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 150);
-
-		// Crea un panel para colocar los botones
-		JPanel panel = new JPanel();
-		frame.add(panel);
-
+		frame.setLayout(null);
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFrame frame2 = new JFrame("Panel de Usuario");
-				frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame2.setSize(400, 200);
 
-				UsuarioPanel usuarioPanel = new UsuarioPanel();
-				frame2.add(usuarioPanel);
-				frame2.setLocationRelativeTo(null);
-				frame2.setVisible(true);
+				new crearUsuario();
 				frame.dispose();
 			}
 		});
@@ -32,18 +21,23 @@ public class Menu {
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				new VentanaInicioSesion();
+				new iniciarSesion();
 				frame.dispose();
 
 			}
 		});
 
 		// Agrega los botones al panel
-		panel.add(crearUsuarioButton);
-		panel.add(iniciarSesionButton);
-
+		crearUsuarioButton.setBounds(5, 50, 130, 40);
+		crearUsuarioButton.setFocusable(false);
+		frame.add(crearUsuarioButton);
+		iniciarSesionButton.setBounds(150, 50, 130, 40);
+		iniciarSesionButton.setFocusable(false);
+		frame.add(iniciarSesionButton);
+		frame.setBounds(0, 0, 300, 200);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+
 	}
 
 }

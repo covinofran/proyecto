@@ -6,18 +6,13 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class UsuarioPanel extends JPanel {
-	/*
-	 * NO SABEMOS PORQUE USUARIOPANEL DA ESE ERROR AUN, SI SACAMOS EL EXTENDS JPANEL
-	 * NO LO TIRA Y DEBERIAMOS AGREGAR FRAME. A TODOS LOS METODOS PERO DA ERROR EL
-	 * METODO BROWSEIMAGE()
-	 */
+public class crearUsuario {
+
 	private JComboBox<String> tipoComboBox;
 	private JTextField nombreTextField;
 	private JPasswordField contrasenaField;
@@ -27,26 +22,26 @@ public class UsuarioPanel extends JPanel {
 	private JFrame frame;
 	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
-	public UsuarioPanel() {
+	public crearUsuario() {
 
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new GridLayout(5, 2));
+		frame.setLayout(new GridLayout(5, 2));
 
 		// Etiqueta y campo de selección para el tipo de usuario
-		add(new JLabel("Tipo de Usuario:"));
+		frame.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
-		add(tipoComboBox);
+		frame.add(tipoComboBox);
 
 		// Etiqueta y campo de texto para el nombre de usuario
-		add(new JLabel("Nombre de Usuario:"));
+		frame.add(new JLabel("Nombre de Usuario:"));
 		nombreTextField = new JTextField();
-		add(nombreTextField);
+		frame.add(nombreTextField);
 
 		// Etiqueta y campo de contraseña
-		add(new JLabel("Contraseña:"));
+		frame.add(new JLabel("Contraseña:"));
 		contrasenaField = new JPasswordField();
-		add(contrasenaField);
+		frame.add(contrasenaField);
 
 		// Botón para cargar una imagen
 		cargarImagenButton = new JButton("Cargar Imagen");
@@ -57,7 +52,7 @@ public class UsuarioPanel extends JPanel {
 			}
 		});
 
-		add(cargarImagenButton);
+		frame.add(cargarImagenButton);
 		enviarButton = new JButton("Enviar");
 		enviarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,16 +106,18 @@ public class UsuarioPanel extends JPanel {
 					System.out.println("  Ruta: " + imagenLocal.getUrl());
 					conexion.guardarUser(local);
 				}
-
 			}
 		});
-		add(cargarImagenButton);
-		add(enviarButton);
+		frame.add(cargarImagenButton);
+		frame.add(enviarButton);
+		frame.setVisible(true);
+		frame.setSize(400, 300);
+		frame.setLocationRelativeTo(null);
 	}
 
 	private void browseImage() {
 		JFileChooser fileChooser = new JFileChooser();
-		int result = fileChooser.showOpenDialog(this);
+		int result = fileChooser.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			String imagePath = fileChooser.getSelectedFile().getPath();
 			String imageName = fileChooser.getSelectedFile().getName();

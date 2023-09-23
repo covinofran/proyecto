@@ -3,7 +3,8 @@ public class Articulo {
 	private double precio;
 	private int id;
 	private Imagen imagen;
-	public Articulo(String nombre, double precio,int id, Imagen imagen) {
+
+	public Articulo(String nombre, double precio, int id, Imagen imagen) {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.id = id;
@@ -25,6 +26,7 @@ public class Articulo {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
+
 	public double getId() {
 		return id;
 	}
@@ -32,6 +34,7 @@ public class Articulo {
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public Imagen getImagen() {
 		return imagen;
 	}
