@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -8,10 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import org.mindrot.jbcrypt.BCrypt;
 
-public class crearUsuario {
+public class CrearUsuario {
 
 	private JComboBox<String> tipoComboBox;
 	private JTextField nombreTextField;
@@ -23,12 +23,13 @@ public class crearUsuario {
 	private JFrame frame;
 	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
-	public crearUsuario() {
-
+	public CrearUsuario() {
 		frame = new JFrame("Crear Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridLayout(5, 2));
-
+		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		frame.setIconImage(logo.getImage());
+		
 		// Etiqueta y campo de selección para el tipo de usuario
 		frame.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
@@ -52,7 +53,6 @@ public class crearUsuario {
 				browseImage();
 			}
 		});
-
 		frame.add(cargarImagenButton);
 		enviarButton = new JButton("Enviar");
 		enviarButton.addActionListener((ActionListener) new ActionListener() {
@@ -72,32 +72,30 @@ public class crearUsuario {
 					System.out.println("It matches");
 				else
 					System.out.println("It does not match");
-
 				/*
 				 * PRINTS PARA VER EN CONSOLA LOS DATOS CARGADOS UNICAMENTE VER COMO CARGA LOS
 				 * DATOS Y LAS MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO
-				 * PARA EDITAR LOS MISMO
+				 * PARA EDITAR LOS MISMOS
 				 */
-
 				if ("Cliente".equals(seleccion)) {
-					// Acciones para el tipo de usuario "Cliente"
 					UsuarioFactory clienteFactory = new ClienteFactory();
 					Usuario cliente = clienteFactory.crearUsuario(usuario, hashed, url, salt);
-					// Imprimir información de los usuarios
+
 					System.out.println("Usuario Cliente:");
 					System.out.println("ID: " + cliente.getId());
 					System.out.println("Contraseña: " + cliente.getContraseña());
 					System.out.println("Ruta Iamagen: " + cliente.getUrl());
+
 					conexion.guardarUser(cliente);
 				} else if ("Local".equals(seleccion)) {
-					// Acciones para el tipo de usuario "Local"
-					System.out.println("Acciones para Local");
 					UsuarioFactory localFactory = new LocalFactory();
 					Usuario local = localFactory.crearUsuario(usuario, hashed, url, salt);
-					System.out.println("\nUsuario Local:");
+
+					System.out.println("Usuario Local:");
 					System.out.println("ID: " + local.getId());
 					System.out.println("Contraseña: " + local.getContraseña());
 					System.out.println("Ruta Imangen: " + local.getUrl());
+
 					conexion.guardarUser(local);
 				}
 			}
@@ -109,7 +107,6 @@ public class crearUsuario {
 				new Menu();
 			}
 		});
-
 		frame.add(cargarImagenButton);
 		frame.add(enviarButton);
 		frame.add(volverButton);
@@ -123,8 +120,6 @@ public class crearUsuario {
 		int result = fileChooser.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			url = fileChooser.getSelectedFile().getPath();
-
 		}
 	}
-
 }

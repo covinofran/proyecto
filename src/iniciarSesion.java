@@ -4,18 +4,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class iniciarSesion {
+public class IniciarSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
 	DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
-	public iniciarSesion() {
-
+	public IniciarSesion() {
+		
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 150);
 		frame.setLayout(new BorderLayout());
+		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		frame.setIconImage(logo.getImage());
 
 		JPanel panel = new JPanel(new GridLayout(3, 2));
 
@@ -57,7 +59,7 @@ public class iniciarSesion {
 		panel.add(contraseñaField);
 		panel.add(volverButton);
 		panel.add(iniciarSesionButton);
-		
+
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

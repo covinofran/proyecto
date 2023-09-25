@@ -4,15 +4,18 @@ import java.awt.event.ActionListener;
 
 public class Menu {
 	public Menu() {
-		// Crea una ventana principal
 		JFrame frame = new JFrame("Menú de Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
+		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		frame.setIconImage(logo.getImage());
+    
+		
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				new crearUsuario();
+				new CrearUsuario();
 				frame.dispose();
 			}
 		});
@@ -21,13 +24,10 @@ public class Menu {
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				new iniciarSesion();
+				new IniciarSesion();
 				frame.dispose();
-
 			}
 		});
-
-		// Agrega los botones al panel
 		crearUsuarioButton.setBounds(5, 50, 130, 40);
 		crearUsuarioButton.setFocusable(false);
 		frame.add(crearUsuarioButton);
@@ -36,8 +36,8 @@ public class Menu {
 		frame.add(iniciarSesionButton);
 		frame.setBounds(0, 0, 300, 200);
 		frame.setLocationRelativeTo(null);
+		
 		frame.setVisible(true);
-
+		
 	}
-
 }
