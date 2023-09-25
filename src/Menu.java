@@ -7,10 +7,10 @@ public class Menu {
 		JFrame frame = new JFrame("Menú de Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
-		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		frame.setResizable(false);
+		ImageIcon logo = new ImageIcon("images\\logo.png");
 		frame.setIconImage(logo.getImage());
-    
-		
+
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -36,8 +36,8 @@ public class Menu {
 		frame.add(iniciarSesionButton);
 		frame.setBounds(0, 0, 300, 200);
 		frame.setLocationRelativeTo(null);
-		
+
 		frame.setVisible(true);
-		
+
 	}
 }

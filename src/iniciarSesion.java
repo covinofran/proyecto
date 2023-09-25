@@ -8,15 +8,16 @@ public class IniciarSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
-	DatabaseConnection conexion = DatabaseConnection.getInstancia();
+	private DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
 	public IniciarSesion() {
-		
+
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 150);
+		frame.setResizable(false);
 		frame.setLayout(new BorderLayout());
-		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		ImageIcon logo = new ImageIcon("images\\logo.png");
 		frame.setIconImage(logo.getImage());
 
 		JPanel panel = new JPanel(new GridLayout(3, 2));

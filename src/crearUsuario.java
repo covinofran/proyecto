@@ -27,9 +27,10 @@ public class CrearUsuario {
 		frame = new JFrame("Crear Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridLayout(5, 2));
-		ImageIcon logo= new ImageIcon("C:\\Users\\Franco\\eclipse-workspace\\Proyecto\\images\\logo.png");
+		frame.setResizable(false);
+		ImageIcon logo = new ImageIcon("images\\logo.png");
 		frame.setIconImage(logo.getImage());
-		
+
 		// Etiqueta y campo de selección para el tipo de usuario
 		frame.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
