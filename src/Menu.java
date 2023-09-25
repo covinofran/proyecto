@@ -8,6 +8,7 @@ public class Menu {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
 		frame.setResizable(false);
+
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		frame.setIconImage(logo.getImage());
 
@@ -36,8 +37,6 @@ public class Menu {
 		frame.add(iniciarSesionButton);
 		frame.setBounds(0, 0, 300, 200);
 		frame.setLocationRelativeTo(null);
-
 		frame.setVisible(true);
-
 	}
 }

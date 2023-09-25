@@ -91,7 +91,7 @@ public class CrearUsuario {
 				} else if ("Local".equals(seleccion)) {
 					UsuarioFactory localFactory = new LocalFactory();
 					Usuario local = localFactory.crearUsuario(usuario, hashed, url, salt);
-
+					
 					System.out.println("Usuario Local:");
 					System.out.println("ID: " + local.getId());
 					System.out.println("Contraseña: " + local.getContraseña());
