@@ -1,3 +1,5 @@
+import java.util.List;
+
 public abstract class Usuario {
 	private String id;
 	private String contraseña;
@@ -42,5 +44,7 @@ public abstract class Usuario {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-
+	public abstract void agregarArticulo(Articulo articulo);
+	public abstract List<Articulo> getArticulos();
+	public abstract void setArticulos(List<Articulo> articulos);
 }

@@ -21,7 +21,7 @@ public class CrearUsuario {
 	private JButton volverButton;
 	private String url;
 	private JFrame frame;
-	DatabaseConnection conexion = DatabaseConnection.getInstancia();
+	private DatabaseConnection conexion = DatabaseConnection.getInstancia();
 
 	public CrearUsuario() {
 		frame = new JFrame("Crear Usuario");
@@ -81,7 +81,7 @@ public class CrearUsuario {
 				if ("Cliente".equals(seleccion)) {
 					UsuarioFactory clienteFactory = new ClienteFactory();
 					Usuario cliente = clienteFactory.crearUsuario(usuario, hashed, url, salt);
-
+					
 					System.out.println("Usuario Cliente:");
 					System.out.println("ID: " + cliente.getId());
 					System.out.println("Contraseña: " + cliente.getContraseña());
@@ -91,12 +91,10 @@ public class CrearUsuario {
 				} else if ("Local".equals(seleccion)) {
 					UsuarioFactory localFactory = new LocalFactory();
 					Usuario local = localFactory.crearUsuario(usuario, hashed, url, salt);
-					
 					System.out.println("Usuario Local:");
 					System.out.println("ID: " + local.getId());
 					System.out.println("Contraseña: " + local.getContraseña());
 					System.out.println("Ruta Imangen: " + local.getUrl());
-
 					conexion.guardarUser(local);
 				}
 			}

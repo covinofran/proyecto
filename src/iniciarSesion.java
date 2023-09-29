@@ -81,6 +81,8 @@ public class IniciarSesion {
 		 */
 		ventanaPrincipal.setLocationRelativeTo(null);
 		ventanaPrincipal.setVisible(true);
+		/*Cliente cliente= new Cliente(conexion.traerCliente());
+		cliente.agregarArticulo("Tomate");*/
 	}
 
 }
