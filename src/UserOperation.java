@@ -1,41 +1,20 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import org.mindrot.jbcrypt.BCrypt;
 
-public class DatabaseConnection {
-	private static DatabaseConnection instancia;
+public class UserOperation{
 	private Connection conexion;
-
-	private DatabaseConnection() {
-		try {
-			String url = "jdbc:mysql://localhost:3306/proyecto";
-			String user = "root";
-			String password = "123123";
-			conexion = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error al conectar a la base de datos");
-		}
+	
+	
+	public UserOperation(Connection conexion) {
+		this.conexion = conexion;
 	}
-
-	public static synchronized DatabaseConnection getInstancia() {
-		if (instancia == null) {
-			instancia = new DatabaseConnection();
-		}
-		return instancia;
-	}
-
-	public Connection getConexion() {
-		return conexion;
-	}
-
+	
+	
 	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
 			String consulta = "SELECT passwd FROM usuario WHERE idusuario = ?";
@@ -70,18 +49,6 @@ public class DatabaseConnection {
 		}
 	}
 
-	public void close() {
-		try {
-
-			if (conexion != null && !conexion.isClosed()) {
-				conexion.close();
-				System.out.println("Conexión a la base de datos cerrada.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void guardarUser(Usuario usuario) {
 		try {
 			// inserta el usuario en la tabla de usuarios
@@ -100,5 +67,4 @@ public class DatabaseConnection {
 			System.err.println("Error al guardar el usuario en la base de datos.");
 		}
 	}
-
 }

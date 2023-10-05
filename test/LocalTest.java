@@ -1,3 +1,4 @@
+/*
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -11,3 +12,4 @@ class LocalTest {
 				() -> assertEquals("logo", local.getUrl()), () -> assertEquals("2606", local.getSalt()));
 	}
 }
+*/

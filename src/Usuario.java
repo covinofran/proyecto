@@ -1,16 +1,16 @@
-import java.util.List;
-
-public abstract class Usuario {
+public class Usuario {
 	private String id;
 	private String contraseña;
 	private String url;
 	private String salt;
+	private String tipo;
 
-	public Usuario(String id, String contraseña, String url, String salt) {
+	public Usuario(String id, String contraseña, String url, String salt, String tipo) {
 		this.id = id;
 		this.contraseña = contraseña;
 		this.url = url;
 		this.salt = salt;
+		this.tipo = tipo;
 	}
 
 	public String getId() {
@@ -44,7 +44,12 @@ public abstract class Usuario {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	public abstract void agregarArticulo(Articulo articulo);
-	public abstract List<Articulo> getArticulos();
-	public abstract void setArticulos(List<Articulo> articulos);
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 }

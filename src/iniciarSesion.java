@@ -3,12 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class IniciarSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
-	private DatabaseConnection conexion = DatabaseConnection.getInstancia();
+	private Connection conexion = DatabaseSingleton.getConexion();
 
 	public IniciarSesion() {
 
@@ -35,9 +36,11 @@ public class IniciarSesion {
 				String contra = new String(contraseñaField.getPassword());
 
 				// ACA COAMPRUEBA SI EL USUARIO Y LA CONTRASEÑA ESTAN BIEN
+				UserOperation userOp= new UserOperation(conexion);
+				if (userOp.autenticarUsuario(usuario, contra, frame)) {
 
-				if (conexion.autenticarUsuario(usuario, contra, frame)) {
-					mostrarVentanaPrincipal(usuario);
+					frame.dispose();
+					new Sesion(usuario);
 				}
 			}
 		});
@@ -64,25 +67,6 @@ public class IniciarSesion {
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-	}
-
-	private void mostrarVentanaPrincipal(String usuario) {
-		conexion.close(); // cierra la conexion con la db
-		frame.dispose(); // Cierra la ventana de inicio de sesión
-
-		JFrame ventanaPrincipal = new JFrame("Sesión Iniciada - Usuario: " + usuario);
-		ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventanaPrincipal.setSize(800, 600);
-		/*
-		 * 
-		 * FALTA CORREGIR TODOS LOS ERRORES ANTES DE IMPLEMENTAR ESTO, COMO CARGAR BIEN
-		 * LOS USUARIO E IMPLEMENTAR LOCALES CON SUS RESPECTIVOS ARTICULOS
-		 * 
-		 */
-		ventanaPrincipal.setLocationRelativeTo(null);
-		ventanaPrincipal.setVisible(true);
-		/*Cliente cliente= new Cliente(conexion.traerCliente());
-		cliente.agregarArticulo("Tomate");*/
 	}
 
 }

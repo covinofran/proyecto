@@ -39,4 +39,5 @@ public class Menu {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
+	
 }

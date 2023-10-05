@@ -1,3 +1,5 @@
+/*
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,3 +27,5 @@ public class Local extends Usuario {
 		this.articulos = articulos;
 	}
 }
+
+*/
