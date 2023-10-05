@@ -6,15 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class UserOperation{
+public class UserOperation {
 	private Connection conexion;
-	
-	
+
 	public UserOperation(Connection conexion) {
 		this.conexion = conexion;
 	}
-	
-	
+
 	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
 			String consulta = "SELECT passwd FROM usuario WHERE idusuario = ?";

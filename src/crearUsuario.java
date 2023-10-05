@@ -23,7 +23,7 @@ public class CrearUsuario {
 	private String url;
 	private JFrame frame;
 	private Connection conexion = DatabaseSingleton.getConexion();
-	
+
 	public CrearUsuario() {
 		frame = new JFrame("Crear Usuario");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,7 +78,7 @@ public class CrearUsuario {
 				 */
 
 				Usuario user = new Usuario(usuario, hashed, url, salt, tipo);
-				UserOperation userOp= new UserOperation(conexion);
+				UserOperation userOp = new UserOperation(conexion);
 				userOp.guardarUser(user);
 
 				System.out.println("Usuario: ");

@@ -9,10 +9,10 @@ public class IniciarSesion {
 	private JFrame frame;
 	private JTextField usuarioTextField;
 	private JPasswordField contraseñaField;
-	private Connection conexion = DatabaseSingleton.getConexion();
+	private Connection conexion;
 
 	public IniciarSesion() {
-
+		conexion = DatabaseSingleton.getConexion();
 		frame = new JFrame("Iniciar Sesión");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 150);
@@ -36,7 +36,7 @@ public class IniciarSesion {
 				String contra = new String(contraseñaField.getPassword());
 
 				// ACA COAMPRUEBA SI EL USUARIO Y LA CONTRASEÑA ESTAN BIEN
-				UserOperation userOp= new UserOperation(conexion);
+				UserOperation userOp = new UserOperation(conexion);
 				if (userOp.autenticarUsuario(usuario, contra, frame)) {
 
 					frame.dispose();
