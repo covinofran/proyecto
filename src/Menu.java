@@ -7,14 +7,14 @@ public class Menu {
 	// Ventana inicial de menu
 	public Menu() {
 		DatabaseSingleton db = DatabaseSingleton.getInstancia();
-		JFrame vMenu = new JFrame("Menú de Usuario");
+		JFrame vMenu = new JFrame("Bienvenido");
 		vMenu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		vMenu.setLayout(null);
 		vMenu.setResizable(false);
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vMenu.setIconImage(logo.getImage());
-
+		
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
