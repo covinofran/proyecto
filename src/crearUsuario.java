@@ -21,31 +21,36 @@ public class CrearUsuario {
 	private JButton enviarButton;
 	private JButton volverButton;
 	private String url;
-	private JFrame frame;
+	private JFrame vCrearUsuario;
 	private Connection conexion = DatabaseSingleton.getConexion();
 
+	
+	
+	//Ventana de creacion del usuario
 	public CrearUsuario() {
-		frame = new JFrame("Crear Usuario");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new GridLayout(5, 2));
-		frame.setResizable(false);
+
+		vCrearUsuario = new JFrame("Crear Usuario");
+		vCrearUsuario.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		vCrearUsuario.setLayout(new GridLayout(5, 2));
+		vCrearUsuario.setResizable(false);
+		
 		ImageIcon logo = new ImageIcon("images\\logo.png");
-		frame.setIconImage(logo.getImage());
+		vCrearUsuario.setIconImage(logo.getImage());
 
 		// Etiqueta y campo de selección para el tipo de usuario
-		frame.add(new JLabel("Tipo de Usuario:"));
+		vCrearUsuario.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
-		frame.add(tipoComboBox);
+		vCrearUsuario.add(tipoComboBox);
 
 		// Etiqueta y campo de texto para el nombre de usuario
-		frame.add(new JLabel("Nombre de Usuario:"));
+		vCrearUsuario.add(new JLabel("Nombre de Usuario:"));
 		nombreTextField = new JTextField();
-		frame.add(nombreTextField);
+		vCrearUsuario.add(nombreTextField);
 
 		// Etiqueta y campo de contraseña
-		frame.add(new JLabel("Contraseña:"));
+		vCrearUsuario.add(new JLabel("Contraseña:"));
 		contrasenaField = new JPasswordField();
-		frame.add(contrasenaField);
+		vCrearUsuario.add(contrasenaField);
 
 		// Botón para cargar una imagen
 		cargarImagenButton = new JButton("Cargar Imagen");
@@ -55,15 +60,20 @@ public class CrearUsuario {
 				browseImage();
 			}
 		});
-		frame.add(cargarImagenButton);
+		
+		
 		enviarButton = new JButton("Enviar");
 		enviarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String usuario = nombreTextField.getText();
+				//Nombre del usuario
+				String nombre = nombreTextField.getText();
+				//Salt generado para agregar al encriptado
 				String salt = BCrypt.gensalt(12);
+				//contraseña del usuario
 				String contra = new String(contrasenaField.getPassword());
+				//Contraseña + salt encriptado
 				String hashed = BCrypt.hashpw(contra, salt);
+				//Tipo de usuario(Cliente/Local)
 				String tipo = (String) tipoComboBox.getSelectedItem();
 
 				/*
@@ -77,22 +87,17 @@ public class CrearUsuario {
 				 * System.out.println("It does not match");
 				 */
 
-				Usuario user = new Usuario(usuario, hashed, url, salt, tipo);
-				UserOperation userOp = new UserOperation(conexion);
-				userOp.guardarUser(user);
+				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
+				UserOperation operacionesUsuario = new UserOperation(conexion);
+				operacionesUsuario.guardarUser(datosUsuario);
+				
+				datosUsuario.toString();
 
-				System.out.println("Usuario: ");
-				System.out.println("ID: " + user.getId());
-				System.out.println("Contraseña: " + user.getContraseña());
-				System.out.println("Ruta Imagen: " + user.getUrl());
-				System.out.println("Tipo: " + user.getTipo());
-
-				/*
+				/*	ESTO YA ESTA OBSOLETO, QUEDA PARA CONSULTA O REFERENCIA
 				 * PRINTS PARA VER EN CONSOLA LOS DATOS CARGADOS UNICAMENTE VER COMO CARGA LOS
 				 * DATOS Y LAS MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO
 				 * PARA EDITAR LOS MISMOS
-				 */
-				/*
+			
 				 * if ("Cliente".equals(seleccion)) { UsuarioFactory clienteFactory = new
 				 * ClienteFactory(); Usuario cliente = clienteFactory.crearUsuario(usuario,
 				 * hashed, url, salt);
@@ -112,24 +117,28 @@ public class CrearUsuario {
 				 */
 			}
 		});
+		
 		volverButton = new JButton("Volver");
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
+				vCrearUsuario.dispose();
 				new Menu();
 			}
 		});
-		frame.add(cargarImagenButton);
-		frame.add(enviarButton);
-		frame.add(volverButton);
-		frame.setVisible(true);
-		frame.setSize(400, 300);
-		frame.setLocationRelativeTo(null);
-	}
 
+		vCrearUsuario.add(cargarImagenButton);
+		vCrearUsuario.add(enviarButton);
+		vCrearUsuario.add(volverButton);
+
+		vCrearUsuario.setVisible(true);
+		vCrearUsuario.setSize(400, 300);
+		vCrearUsuario.setLocationRelativeTo(null);
+	}
+	
+	//Metodo para abrir una ventana y obtener el path de un archivo
 	private void browseImage() {
 		JFileChooser fileChooser = new JFileChooser();
-		int result = fileChooser.showOpenDialog(frame);
+		int result = fileChooser.showOpenDialog(vCrearUsuario);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			url = fileChooser.getSelectedFile().getPath();
 		}

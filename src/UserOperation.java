@@ -13,6 +13,8 @@ public class UserOperation {
 		this.conexion = conexion;
 	}
 
+	// Metodo para iniciar sesion, comprueba si existe el usuario y compara la
+	// contraseña con la almacenada
 	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
 			String consulta = "SELECT passwd FROM usuario WHERE idusuario = ?";
@@ -47,16 +49,19 @@ public class UserOperation {
 		}
 	}
 
+	// Almacena un usuario en la base de datos
+	// TODAVIA NO COMPRUEBA SI EL USUARIO EXISTE
 	public void guardarUser(Usuario usuario) {
 		try {
-			// inserta el usuario en la tabla de usuarios
-			String sqlUser = "INSERT INTO usuario (idusuario, passwd, url, salt) VALUES (?, ?, ?, ?)";
+
+			String sqlUser = "INSERT INTO usuario (idusuario, passwd, url, salt, tipo) VALUES (?, ?, ?, ?)";
 			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
 
 			preparedStatementUser.setString(1, usuario.getId().trim());
 			preparedStatementUser.setString(2, usuario.getContraseña().trim());
 			preparedStatementUser.setString(3, usuario.getUrl());
 			preparedStatementUser.setString(4, usuario.getSalt());
+			preparedStatementUser.setString(5, usuario.getTipo());
 			preparedStatementUser.executeUpdate();
 
 			System.out.println("Usuario guardado en la base de datos correctamente.");
@@ -64,5 +69,31 @@ public class UserOperation {
 			e.printStackTrace();
 			System.err.println("Error al guardar el usuario en la base de datos.");
 		}
+	}
+
+	public Usuario readUsuario(String nombreUsuario) {
+		Usuario usuarioTraido= null;
+		try {
+			String consulta = "SELECT * FROM usuario WHERE idusuario = ?";
+			PreparedStatement statement = conexion.prepareStatement(consulta);
+			statement.setString(1, nombreUsuario.trim());
+
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				
+				String contra=resultSet.getString("passwd");
+				String url=resultSet.getString("url");
+				String salt=resultSet.getString("salt");
+				String tipo=resultSet.getString("tipo");
+	
+				usuarioTraido=new Usuario(nombreUsuario,contra,url,salt,tipo);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			
+		}
+		return usuarioTraido;
 	}
 }

@@ -6,25 +6,28 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 public class IniciarSesion {
-	private JFrame frame;
-	private JTextField usuarioTextField;
+	private JFrame vIniciarSesion;
+	private JTextField nombreTextField;
 	private JPasswordField contraseñaField;
 	private Connection conexion;
 
 	public IniciarSesion() {
+		
 		conexion = DatabaseSingleton.getConexion();
-		frame = new JFrame("Iniciar Sesión");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 150);
-		frame.setResizable(false);
-		frame.setLayout(new BorderLayout());
+
+		vIniciarSesion = new JFrame("Iniciar Sesión");
+		vIniciarSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		vIniciarSesion.setSize(300, 150);
+		vIniciarSesion.setResizable(false);
+		vIniciarSesion.setLayout(new BorderLayout());
+
 		ImageIcon logo = new ImageIcon("images\\logo.png");
-		frame.setIconImage(logo.getImage());
+		vIniciarSesion.setIconImage(logo.getImage());
 
 		JPanel panel = new JPanel(new GridLayout(3, 2));
 
-		JLabel usuarioLabel = new JLabel("Usuario:");
-		usuarioTextField = new JTextField();
+		JLabel nombreLabel = new JLabel("Usuario:");
+		nombreTextField = new JTextField();
 
 		JLabel contraseñaLabel = new JLabel("Contraseña:");
 		contraseñaField = new JPasswordField();
@@ -32,41 +35,44 @@ public class IniciarSesion {
 		JButton iniciarSesionButton = new JButton("Iniciar Sesión");
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String usuario = usuarioTextField.getText();
+				
+				String nombreUsuario = nombreTextField.getText();
 				String contra = new String(contraseñaField.getPassword());
 
-				// ACA COAMPRUEBA SI EL USUARIO Y LA CONTRASEÑA ESTAN BIEN
-				UserOperation userOp = new UserOperation(conexion);
-				if (userOp.autenticarUsuario(usuario, contra, frame)) {
+				UserOperation operacionesUsuario = new UserOperation(conexion);
+				if (operacionesUsuario.autenticarUsuario(nombreUsuario, contra, vIniciarSesion)) {
 
-					frame.dispose();
-					new Sesion(usuario);
+					vIniciarSesion.dispose();
+					new Sesion(nombreUsuario);
 				}
 			}
 		});
+
 		contraseñaField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				iniciarSesionButton.doClick(); // Simula la acción del botón al presionar "Enter" en el campo de texto
 			}
 		});
+
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
+				
+				vIniciarSesion.dispose();
 				new Menu();
 			}
 		});
-
-		panel.add(usuarioLabel);
-		panel.add(usuarioTextField);
+		//EL PANEL SE VA A QUITAR
+		panel.add(nombreLabel);
+		panel.add(nombreTextField);
 		panel.add(contraseñaLabel);
 		panel.add(contraseñaField);
 		panel.add(volverButton);
 		panel.add(iniciarSesionButton);
 
-		frame.add(panel, BorderLayout.CENTER);
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		vIniciarSesion.add(panel, BorderLayout.CENTER);
+		vIniciarSesion.setVisible(true);
+		vIniciarSesion.setLocationRelativeTo(null);
 	}
 
 }

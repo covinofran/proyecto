@@ -3,21 +3,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Menu {
+	
+	// Ventana inicial de menu
 	public Menu() {
-		JFrame frame = new JFrame("Menú de Usuario");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
-		frame.setResizable(false);
+		DatabaseSingleton db = DatabaseSingleton.getInstancia();
+		JFrame vMenu = new JFrame("Menú de Usuario");
+		vMenu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		vMenu.setLayout(null);
+		vMenu.setResizable(false);
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
-		frame.setIconImage(logo.getImage());
+		vMenu.setIconImage(logo.getImage());
 
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				new CrearUsuario();
-				frame.dispose();
+				vMenu.dispose();
 			}
 		});
 
@@ -26,18 +29,35 @@ public class Menu {
 			public void actionPerformed(ActionEvent e) {
 
 				new IniciarSesion();
-				frame.dispose();
+				vMenu.dispose();
 			}
 		});
+		
+		JButton salirButton = new JButton("Salir");
+		salirButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				db.close();
+				System.exit(0);
+			}
+		});
+		
+		
 		crearUsuarioButton.setBounds(5, 50, 130, 40);
 		crearUsuarioButton.setFocusable(false);
-		frame.add(crearUsuarioButton);
+		vMenu.add(crearUsuarioButton);
+
 		iniciarSesionButton.setBounds(150, 50, 130, 40);
 		iniciarSesionButton.setFocusable(false);
-		frame.add(iniciarSesionButton);
-		frame.setBounds(0, 0, 300, 200);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		vMenu.add(iniciarSesionButton);
+		
+		salirButton.setBounds(85, 100, 130, 40);
+		salirButton.setFocusable(false);
+		vMenu.add(salirButton);
+
+		vMenu.setBounds(0, 0, 300, 200);
+		vMenu.setLocationRelativeTo(null);
+		vMenu.setVisible(true);
 	}
 
 }

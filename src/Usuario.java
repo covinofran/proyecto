@@ -1,4 +1,10 @@
 public class Usuario {
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", contraseña=" + contraseña + ", url=" + url + ", salt=" + salt + ", tipo=" + tipo
+				+ "]";
+	}
+
 	private String id;
 	private String contraseña;
 	private String url;
