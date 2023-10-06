@@ -13,7 +13,7 @@ public class Sesion {
 		Usuario userActual= operacionesUsuario.readUsuario(nombreUsuario);
 		JFrame vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getId());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		vSesion.setSize(800, 600);
+		
 		/*
 		 * 
 		 * FALTA CORREGIR TODOS LOS ERRORES ANTES DE IMPLEMENTAR ESTO, COMO CARGAR BIEN
@@ -29,10 +29,13 @@ public class Sesion {
 				new Menu();
 			}
 		});
-		vSesion.add(cerrarButton);
 		
+		vSesion.add(cerrarButton);
+		vSesion.setLayout(null);
+		vSesion.setBounds(0,0,800,600);
 		vSesion.setLocationRelativeTo(null);
 		vSesion.setVisible(true);
+		cerrarButton.setBounds(650,0,150,50);
 		/*
 		 * Cliente cliente= new Cliente(conexion.traerCliente());
 		 * cliente.agregarArticulo("Tomate");

@@ -65,14 +65,16 @@ public class UserOperation {
 			preparedStatementUser.executeUpdate();
 
 			System.out.println("Usuario guardado en la base de datos correctamente.");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("Error al guardar el usuario en la base de datos.");
+
 		}
 	}
 
 	public Usuario readUsuario(String nombreUsuario) {
-		Usuario usuarioTraido= null;
+		Usuario usuarioTraido = null;
 		try {
 			String consulta = "SELECT * FROM usuario WHERE idusuario = ?";
 			PreparedStatement statement = conexion.prepareStatement(consulta);
@@ -80,19 +82,18 @@ public class UserOperation {
 
 			ResultSet resultSet = statement.executeQuery();
 			if (resultSet.next()) {
-				
-				String contra=resultSet.getString("passwd");
-				String url=resultSet.getString("url");
-				String salt=resultSet.getString("salt");
-				String tipo=resultSet.getString("tipo");
-	
-				usuarioTraido=new Usuario(nombreUsuario,contra,url,salt,tipo);
-				
+
+				String contra = resultSet.getString("passwd");
+				String url = resultSet.getString("url");
+				String salt = resultSet.getString("salt");
+				String tipo = resultSet.getString("tipo");
+
+				usuarioTraido = new Usuario(nombreUsuario, contra, url, salt, tipo);
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
-			
+
 		}
 		return usuarioTraido;
 	}

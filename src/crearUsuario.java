@@ -70,7 +70,7 @@ public class CrearUsuario {
 				//Salt generado para agregar al encriptado
 				String salt = BCrypt.gensalt(12);
 				//contraseña del usuario
-				String contra = new String(contrasenaField.getPassword());
+				String contra = new String(contrasenaField.getPassword()); 
 				//Contraseña + salt encriptado
 				String hashed = BCrypt.hashpw(contra, salt);
 				//Tipo de usuario(Cliente/Local)
