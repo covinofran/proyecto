@@ -1,14 +1,16 @@
-/*
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Local extends Usuario {
+public class Tienda {
 	private List<Articulo> articulos;
+	private int id;
+	private String nombreUsuario;
 
-	public Local(String id, String contraseña, String url, String salt) {
-		super(id, contraseña, url, salt);
+	public Tienda(int id, String nombreUsuario) {
+		this.id = id;
+		this.nombreUsuario = nombreUsuario;
 		this.articulos = new ArrayList<>();
+
 	}
 
 	public void agregarArticulo(Articulo articulo) {
@@ -26,6 +28,20 @@ public class Local extends Usuario {
 	public void setArticulos(List<Articulo> articulos) {
 		this.articulos = articulos;
 	}
-}
 
-*/
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getnombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setnombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+}

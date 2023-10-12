@@ -90,7 +90,9 @@ public class CrearUsuario {
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
 				UserOperation operacionesUsuario = new UserOperation(conexion);
 				operacionesUsuario.guardarUser(datosUsuario);
-				
+				if(tipo=="local") {
+					Tienda tienda=new Tienda(1,nombre);
+				}
 				datosUsuario.toString();
 
 				/*	ESTO YA ESTA OBSOLETO, QUEDA PARA CONSULTA O REFERENCIA
