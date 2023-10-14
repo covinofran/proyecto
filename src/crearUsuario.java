@@ -1,6 +1,9 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,6 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class CrearUsuario {
 
@@ -22,18 +26,16 @@ public class CrearUsuario {
 	private JButton volverButton;
 	private String url;
 	private JFrame vCrearUsuario;
-	private Connection conexion = DatabaseSingleton.getConexion();
+	private Connection db = DatabaseSingleton.getConexion();
 
-	
-	
-	//Ventana de creacion del usuario
+	// Ventana de creacion del usuario
 	public CrearUsuario() {
 
 		vCrearUsuario = new JFrame("Crear Usuario");
 		vCrearUsuario.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		vCrearUsuario.setLayout(new GridLayout(5, 2));
 		vCrearUsuario.setResizable(false);
-		
+
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vCrearUsuario.setIconImage(logo.getImage());
 
@@ -60,20 +62,19 @@ public class CrearUsuario {
 				browseImage();
 			}
 		});
-		
-		
+
 		enviarButton = new JButton("Enviar");
 		enviarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Nombre del usuario
+				// Nombre del usuario
 				String nombre = nombreTextField.getText();
-				//Salt generado para agregar al encriptado
+				// Salt generado para agregar al encriptado
 				String salt = BCrypt.gensalt(12);
-				//contraseña del usuario
-				String contra = new String(contrasenaField.getPassword()); 
-				//Contraseña + salt encriptado
+				// contraseña del usuario
+				String contra = new String(contrasenaField.getPassword());
+				// Contraseña + salt encriptado
 				String hashed = BCrypt.hashpw(contra, salt);
-				//Tipo de usuario(Cliente/Local)
+				// Tipo de usuario(Cliente/Local)
 				String tipo = (String) tipoComboBox.getSelectedItem();
 
 				/*
@@ -88,18 +89,22 @@ public class CrearUsuario {
 				 */
 
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
-				UserOperation operacionesUsuario = new UserOperation(conexion);
+				UserOperation operacionesUsuario = new UserOperation(db);
 				operacionesUsuario.guardarUser(datosUsuario);
-				if(tipo=="local") {
-					Tienda tienda=new Tienda(1,nombre);
+				if (tipo == "local") {
+					Tienda tienda = new Tienda("Tienda Pepito", nombre, url);
+					Articulo art = new Articulo("papa", 2.2, 1, "papa.png");
+					tienda.agregarArticulo(art);
+
 				}
 				datosUsuario.toString();
 
-				/*	ESTO YA ESTA OBSOLETO, QUEDA PARA CONSULTA O REFERENCIA
-				 * PRINTS PARA VER EN CONSOLA LOS DATOS CARGADOS UNICAMENTE VER COMO CARGA LOS
-				 * DATOS Y LAS MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO
-				 * PARA EDITAR LOS MISMOS
-			
+				/*
+				 * ESTO YA ESTA OBSOLETO, QUEDA PARA CONSULTA O REFERENCIA PRINTS. PARA VER EN
+				 * CONSOLA LOS DATOS CARGADOS UNICAMENTE VER COMO CARGA LOS DATOS Y LAS
+				 * MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO PARA EDITAR
+				 * LOS MISMOS
+				 * 
 				 * if ("Cliente".equals(seleccion)) { UsuarioFactory clienteFactory = new
 				 * ClienteFactory(); Usuario cliente = clienteFactory.crearUsuario(usuario,
 				 * hashed, url, salt);
@@ -119,12 +124,24 @@ public class CrearUsuario {
 				 */
 			}
 		});
-		
+
 		volverButton = new JButton("Volver");
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				vCrearUsuario.dispose();
 				new Menu();
+			}
+		});
+		vCrearUsuario.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					db.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.exit(0);
 			}
 		});
 
@@ -136,8 +153,8 @@ public class CrearUsuario {
 		vCrearUsuario.setSize(400, 300);
 		vCrearUsuario.setLocationRelativeTo(null);
 	}
-	
-	//Metodo para abrir una ventana y obtener el path de un archivo
+
+	// Metodo para abrir una ventana y obtener el path de un archivo
 	private void browseImage() {
 		JFileChooser fileChooser = new JFileChooser();
 		int result = fileChooser.showOpenDialog(vCrearUsuario);

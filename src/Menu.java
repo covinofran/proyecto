@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Menu {
-	
+
 	// Ventana inicial de menu
 	public Menu() {
 		DatabaseSingleton db = DatabaseSingleton.getInstancia();
@@ -14,7 +16,7 @@ public class Menu {
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vMenu.setIconImage(logo.getImage());
-		
+
 		JButton crearUsuarioButton = new JButton("Crear Usuario");
 		crearUsuarioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -32,17 +34,24 @@ public class Menu {
 				vMenu.dispose();
 			}
 		});
-		
+
 		JButton salirButton = new JButton("Salir");
 		salirButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				db.close();
 				System.exit(0);
 			}
 		});
-		
-		
+
+		vMenu.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				db.close();
+				System.exit(0);
+			}
+		});
+
 		crearUsuarioButton.setBounds(5, 50, 130, 40);
 		crearUsuarioButton.setFocusable(false);
 		vMenu.add(crearUsuarioButton);
@@ -50,7 +59,7 @@ public class Menu {
 		iniciarSesionButton.setBounds(150, 50, 130, 40);
 		iniciarSesionButton.setFocusable(false);
 		vMenu.add(iniciarSesionButton);
-		
+
 		salirButton.setBounds(85, 100, 130, 40);
 		salirButton.setFocusable(false);
 		vMenu.add(salirButton);

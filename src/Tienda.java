@@ -3,13 +3,15 @@ import java.util.List;
 
 public class Tienda {
 	private List<Articulo> articulos;
-	private int id;
+	private String nombreTienda;
 	private String nombreUsuario;
+	private String url;
 
-	public Tienda(int id, String nombreUsuario) {
-		this.id = id;
+	public Tienda(String nombreTienda, String nombreUsuario, String url) {
+		this.nombreTienda = nombreTienda;
 		this.nombreUsuario = nombreUsuario;
 		this.articulos = new ArrayList<>();
+		this.url = url;
 
 	}
 
@@ -29,12 +31,12 @@ public class Tienda {
 		this.articulos = articulos;
 	}
 
-	public int getId() {
-		return id;
+	public String getnombreTienda() {
+		return nombreTienda;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setnombreTienda(String nombreTienda) {
+		this.nombreTienda = nombreTienda;
 	}
 
 	public String getnombreUsuario() {
@@ -43,5 +45,13 @@ public class Tienda {
 
 	public void setnombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

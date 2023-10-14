@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
 	@Override
 	public String toString() {
@@ -10,6 +13,7 @@ public class Usuario {
 	private String url;
 	private String salt;
 	private String tipo;
+	private List<Articulo> carrito;
 
 	public Usuario(String id, String contraseña, String url, String salt, String tipo) {
 		this.id = id;
@@ -17,6 +21,7 @@ public class Usuario {
 		this.url = url;
 		this.salt = salt;
 		this.tipo = tipo;
+		this.carrito = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -57,5 +62,21 @@ public class Usuario {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public void agregarArticulo(Articulo articulo) {
+		carrito.add(articulo);
+	}
+
+	public void eliminarArticulo(Articulo articulo) {
+		carrito.remove(articulo);
+	}
+
+	public List<Articulo> getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(List<Articulo> carrito) {
+		this.carrito = carrito;
 	}
 }

@@ -3,18 +3,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class IniciarSesion {
 	private JFrame vIniciarSesion;
 	private JTextField nombreTextField;
 	private JPasswordField contraseñaField;
-	private Connection conexion;
+	private Connection db;
 
 	public IniciarSesion() {
-		
-		conexion = DatabaseSingleton.getConexion();
 
+		db = DatabaseSingleton.getConexion();
 		vIniciarSesion = new JFrame("Iniciar Sesión");
 		vIniciarSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		vIniciarSesion.setSize(300, 150);
@@ -35,11 +37,11 @@ public class IniciarSesion {
 		JButton iniciarSesionButton = new JButton("Iniciar Sesión");
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String nombreUsuario = nombreTextField.getText();
 				String contra = new String(contraseñaField.getPassword());
 
-				UserOperation operacionesUsuario = new UserOperation(conexion);
+				UserOperation operacionesUsuario = new UserOperation(db);
 				if (operacionesUsuario.autenticarUsuario(nombreUsuario, contra, vIniciarSesion)) {
 
 					vIniciarSesion.dispose();
@@ -57,12 +59,24 @@ public class IniciarSesion {
 		JButton volverButton = new JButton("Volver");
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				vIniciarSesion.dispose();
 				new Menu();
 			}
 		});
-		//EL PANEL SE VA A QUITAR
+		vIniciarSesion.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					db.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		// EL PANEL SE VA A QUITAR
 		panel.add(nombreLabel);
 		panel.add(nombreTextField);
 		panel.add(contraseñaLabel);
