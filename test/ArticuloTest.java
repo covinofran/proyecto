@@ -6,8 +6,8 @@ class ArticuloTest {
 
 	@Test
 	void test() {
-		Articulo a = new Articulo("papa", 1.2, 1, "imagen.jpg");
-		assertAll(() -> assertEquals("papa", a.getNombre()), () -> assertEquals(1.2, a.getPrecio()),
-				() -> assertEquals(1, a.getId()), () -> assertEquals("imagen.jpg", a.getUrl()));
+		Articulo a = new Articulo("tienda","papa", 1.2, 1, "imagen.jpg");
+		assertAll(() -> assertEquals("papa", a.getNombreArt()), () -> assertEquals(1.2, a.getPrecio()),
+				() -> assertEquals("tienda", a.getNombreTienda()), () -> assertEquals("imagen.jpg", a.getUrl()));
 	}
 }

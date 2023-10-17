@@ -45,7 +45,7 @@ public class IniciarSesion {
 				if (operacionesUsuario.autenticarUsuario(nombreUsuario, contra, vIniciarSesion)) {
 
 					vIniciarSesion.dispose();
-					new Sesion(nombreUsuario);
+					Sesion.getInstancia(nombreUsuario);
 				}
 			}
 		});

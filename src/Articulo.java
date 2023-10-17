@@ -1,22 +1,44 @@
 public class Articulo {
-	private String nombre;
+	private String nombreTienda;
+	private String nombreArt;
 	private double precio;
-	private int id;
+	private int cantidad;
 	private String url;
 
-	public Articulo(String nombre, double precio, int id, String url) {
-		this.nombre = nombre;
+	public Articulo(String nombreTienda, String nombreArt, double precio, int cantidad, String url) {
+		this.nombreTienda = nombreTienda;
+		this.nombreArt = nombreArt;
 		this.precio = precio;
-		this.id = id;
+		this.cantidad = cantidad;
 		this.url = url;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreTienda() {
+		return nombreTienda;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreTienda(String nombreTienda) {
+		this.nombreTienda = nombreTienda;
+	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getNombreArt() {
+		return nombreArt;
+	}
+
+	public void setNombreArt(String nombreArt) {
+		this.nombreArt = nombreArt;
 	}
 
 	public double getPrecio() {
@@ -25,14 +47,6 @@ public class Articulo {
 
 	public void setPrecio(double precio) {
 		this.precio = precio;
-	}
-
-	public double getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getUrl() {

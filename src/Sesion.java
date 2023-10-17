@@ -1,31 +1,46 @@
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Sesion {
+	private List<Tienda> tiendaList;
+	private JFrame vSesion;
+	private Connection db = DatabaseSingleton.getConexion();
+	private JPanel panelTiendas;
+	private static Sesion sesion;
+	private String nombreUsuario;
+
 	// Ventana de sesion ya inciada
-	public Sesion(String nombreUsuario) {
-		Connection db = DatabaseSingleton.getConexion();
+	private Sesion(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 		UserOperation operacionesUsuario = new UserOperation(db);
 		Usuario userActual = operacionesUsuario.readUsuario(nombreUsuario);
-		JFrame vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getId());
+		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getId());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vSesion.setIconImage(logo.getImage());
-		ImageIcon urlImagen = new ImageIcon(userActual.getUrl());
-		System.out.println(userActual.getUrl());
-		Image reescalado = urlImagen.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-		ImageIcon imagenFinal = new ImageIcon(reescalado);
+		ImageIcon userImagen = new ImageIcon(userActual.getUrl());
+		
+		Image rUserImagen = userImagen.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		ImageIcon imagenFinal = new ImageIcon(rUserImagen);
 		JLabel imagenPerfil = new JLabel(imagenFinal);
 
 		JButton cerrarButton = new JButton("Cerrar Sesion");
@@ -45,12 +60,13 @@ public class Sesion {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+
 				System.exit(0);
 			}
 		});
-		new VistaTiendas();
+
 		vSesion.add(imagenPerfil);
-		imagenPerfil.setBounds(0, 0, 80, 80);
+		imagenPerfil.setBounds(0, 0, 50, 50);
 
 		vSesion.add(cerrarButton);
 		vSesion.setLayout(null);
@@ -60,5 +76,78 @@ public class Sesion {
 		cerrarButton.setBounds(650, 10, 120, 40);
 		cerrarButton.setFocusable(false);
 
+		tiendaList = obtenerDatosDeTiendas();
+
+		panelTiendas = new JPanel(new FlowLayout());
+
+		cargarTiendas();
+		// Agregar el panel de tiendas al JFrame
+		vSesion.add(panelTiendas);
+		panelTiendas.setBounds(0, 150, 800, 400);
+		if (userActual.getTipo() == "Local") {
+			JButton modificarButton = new JButton("Tu Tienda");
+			modificarButton.addActionListener((ActionListener) new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					// implementar manejo de tienda
+				}
+			});
+			modificarButton.setBounds(500, 10, 120, 40);
+			vSesion.add(modificarButton);
+			modificarButton.setFocusable(false);
+
+		}
+
+	}
+
+//METODOS   
+	public void cargarTiendas() {
+		for (Tienda datos : tiendaList) {
+			ImageIcon imagenTienda = new ImageIcon(datos.getUrl());
+			Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
+			ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
+			JLabel imageLabel = new JLabel(imagenTiendaF);
+			JLabel nombreLabel = new JLabel(datos.getnombreTienda());
+			imageLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					panelTiendas.removeAll();
+					panelTiendas.revalidate();
+					panelTiendas.repaint();
+					new VerTienda(datos, panelTiendas, nombreUsuario);
+
+				}
+			});
+			JPanel tiendaPanel = new JPanel();
+			tiendaPanel.setLayout(new BoxLayout(tiendaPanel, BoxLayout.Y_AXIS));
+			tiendaPanel.add(imageLabel);
+			tiendaPanel.add(nombreLabel);
+
+			panelTiendas.add(tiendaPanel);
+		}
+	}
+
+	private ArrayList<Tienda> obtenerDatosDeTiendas() {
+		ArrayList<Tienda> tiendas = new ArrayList<>();
+		try (PreparedStatement statement = db.prepareStatement("SELECT nombreTienda, nombreUsuario, url FROM tienda");
+				ResultSet resultSet = statement.executeQuery()) {
+
+			while (resultSet.next()) {
+				String nombreTienda = resultSet.getString("nombreTienda");
+
+				String url = resultSet.getString("url");
+				tiendas.add(new Tienda(nombreTienda, null, url));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tiendas;
+	}
+
+	public static synchronized Sesion getInstancia(String nombreUsuario) {
+		if (sesion == null) {
+			sesion = new Sesion(nombreUsuario);
+		}
+		return sesion;
 	}
 }

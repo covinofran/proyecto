@@ -93,7 +93,7 @@ public class CrearUsuario {
 				operacionesUsuario.guardarUser(datosUsuario);
 				if (tipo == "local") {
 					Tienda tienda = new Tienda("Tienda Pepito", nombre, url);
-					Articulo art = new Articulo("papa", 2.2, 1, "papa.png");
+					Articulo art = new Articulo(tienda.getnombreTienda(), "papa", 2.2, 1, "papa.png");
 					tienda.agregarArticulo(art);
 
 				}

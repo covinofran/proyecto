@@ -1,8 +1,7 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Tienda {
-	private List<Articulo> articulos;
+	private ArrayList<Articulo> articulos;
 	private String nombreTienda;
 	private String nombreUsuario;
 	private String url;
@@ -23,11 +22,11 @@ public class Tienda {
 		articulos.remove(articulo);
 	}
 
-	public List<Articulo> getArticulos() {
+	public ArrayList<Articulo> getArticulos() {
 		return articulos;
 	}
 
-	public void setArticulos(List<Articulo> articulos) {
+	public void setArticulos(ArrayList<Articulo> articulos) {
 		this.articulos = articulos;
 	}
 
