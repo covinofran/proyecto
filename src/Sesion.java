@@ -32,7 +32,7 @@ public class Sesion {
 
 		UserOperation operacionesUsuario = new UserOperation(db);
 		userActual = operacionesUsuario.readUsuario(nombreUsuario);
-		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getId());
+		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getNombreUsuario());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
@@ -105,12 +105,8 @@ public class Sesion {
 		});
 
 		modificarButton.setBounds(500, 10, 120, 40);
-
-		vSesion.add(modificarButton);
-
 		modificarButton.setFocusable(false);
-
-		System.out.println(userActual.getTipo());
+		vSesion.add(modificarButton);
 
 		if ("Local".equals(userActual.getTipo())) {
 			modificarButton.setVisible(true);
@@ -128,14 +124,14 @@ public class Sesion {
 			Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
 			ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
 			JLabel imageLabel = new JLabel(imagenTiendaF);
-			JLabel nombreLabel = new JLabel(datos.getnombreTienda());
+			JLabel nombreLabel = new JLabel(datos.getNombreTienda());
 			imageLabel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					panelSesion.removeAll();
 					panelSesion.revalidate();
 					panelSesion.repaint();
-					new VerTienda(datos, panelSesion, userActual.getId());
+					new VerTienda(datos, panelSesion, userActual);
 
 				}
 			});

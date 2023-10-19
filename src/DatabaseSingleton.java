@@ -35,11 +35,9 @@ public class DatabaseSingleton {
 
 			if (conexion != null && !conexion.isClosed()) {
 				conexion.close();
-				System.out.println("Conexión a la base de datos cerrada.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -2,21 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", contraseña=" + contraseña + ", url=" + url + ", salt=" + salt + ", tipo=" + tipo
-				+ "]";
-	}
 
-	private String id;
+	private String nombreUsuario;
 	private String contraseña;
 	private String url;
 	private String salt;
 	private String tipo;
 	private List<Articulo> carrito;
 
-	public Usuario(String id, String contraseña, String url, String salt, String tipo) {
-		this.id = id;
+	public Usuario(String nombreUsuario, String contraseña, String url, String salt, String tipo) {
+		this.nombreUsuario = nombreUsuario;
 		this.contraseña = contraseña;
 		this.url = url;
 		this.salt = salt;
@@ -24,12 +19,12 @@ public class Usuario {
 		this.carrito = new ArrayList<>();
 	}
 
-	public String getId() {
-		return id;
+	public String getNombreUsuario() {
+		return nombreUsuario;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getContraseña() {
@@ -79,4 +74,11 @@ public class Usuario {
 	public void setCarrito(List<Articulo> carrito) {
 		this.carrito = carrito;
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [nombre Usuario=" + nombreUsuario + ", contraseña=" + contraseña + ", url=" + url + ", salt="
+				+ salt + ", tipo=" + tipo + "]";
+	}
+
 }

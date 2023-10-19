@@ -19,9 +19,11 @@ public class Perfil {
 	private String url;
 	private Connection db = DatabaseSingleton.getConexion();
 	private JPanel panelSesionInferior;
+
 	public Perfil(JPanel panelSesion, Usuario userActual) {
 		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
-		
+		System.out.println(userActual.toString());
+
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelSesionInferior = new JPanel();
 		panelSesionInferior.setLayout(new GridLayout(5, 2));
@@ -29,7 +31,6 @@ public class Perfil {
 		panelSesionInferior.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
 		panelSesionInferior.add(tipoComboBox);
-
 
 		// Etiqueta y campo de contraseña
 		panelSesionInferior.add(new JLabel("Contraseña:"));
@@ -49,27 +50,26 @@ public class Perfil {
 		enviarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Nombre del usuario
-				
+
 				// Salt generado para agregar al encriptado
 				String salt = BCrypt.gensalt(12);
 				// contraseña del usuario
 				String contra = new String(contrasenaField.getPassword());
 				// Contraseña + salt encriptado
 				String hashed = BCrypt.hashpw(contra, salt);
-				
+
 				// Tipo de usuario(Cliente/Local)
 				String tipo = (String) tipoComboBox.getSelectedItem();
 
-				Usuario datosUsuario = new Usuario(userActual.getId(), hashed, url, salt, tipo);
+				Usuario datosUsuario = new Usuario(userActual.getNombreUsuario(), hashed, url, salt, tipo);
 				UserOperation operacionesUsuario = new UserOperation(db);
 				operacionesUsuario.updateUser(datosUsuario);
 				if (tipo == "local") {
-					Tienda tienda = new Tienda("Tienda Pepito", userActual.getId(), url);
-					//CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
+					Tienda tienda = new Tienda("Tienda Pepito", userActual.getNombreUsuario(), url);
+					// CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
+					tienda.toString();
 				}
-				datosUsuario.toString();
-
-				
+				System.out.println(datosUsuario.toString());
 			}
 		});
 
@@ -79,7 +79,7 @@ public class Perfil {
 				panelSesion.removeAll();
 				panelSesion.revalidate();
 				panelSesion.repaint();
-				Sesion sesion = Sesion.getInstancia(userActual.getId());
+				Sesion sesion = Sesion.getInstancia(userActual.getNombreUsuario());
 				sesion.cargarTiendas();
 			}
 		});

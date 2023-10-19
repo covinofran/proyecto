@@ -91,9 +91,11 @@ public class CrearUsuario {
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
 				UserOperation operacionesUsuario = new UserOperation(db);
 				operacionesUsuario.guardarUser(datosUsuario);
+
 				if (tipo == "local") {
-					Tienda tienda = new Tienda("Tienda Pepito", nombre, url);
-					//FALTA CARGAR LA TIENDA
+					Tienda tienda = new Tienda(nombre, nombre, url);
+					// FALTA CARGAR LA TIENDA
+					System.out.println(tienda.toString());
 
 				}
 				datosUsuario.toString();

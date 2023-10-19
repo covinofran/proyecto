@@ -30,11 +30,11 @@ public class Tienda {
 		this.articulos = articulos;
 	}
 
-	public String getnombreTienda() {
+	public String getNombreTienda() {
 		return nombreTienda;
 	}
 
-	public void setnombreTienda(String nombreTienda) {
+	public void setNombreTienda(String nombreTienda) {
 		this.nombreTienda = nombreTienda;
 	}
 
@@ -52,5 +52,10 @@ public class Tienda {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Override
+	public String toString() {
+		return "Tienda [nombreTienda=" + nombreTienda + ", nombreUsuario=" + nombreUsuario + ", url=" + url + "]";
 	}
 }

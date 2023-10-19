@@ -17,7 +17,7 @@ public class UserOperation {
 	// contraseña con la almacenada
 	public boolean autenticarUsuario(String nombreUsuario, String contraseña, JFrame frame) {
 		try {
-			String consulta = "SELECT passwd FROM usuario WHERE idusuario = ?";
+			String consulta = "SELECT passwd FROM usuario WHERE nombreUsuario = ?";
 			PreparedStatement statement = conexion.prepareStatement(consulta);
 			statement.setString(1, nombreUsuario.trim());
 
@@ -33,7 +33,7 @@ public class UserOperation {
 
 					JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrecta", "Error al iniciar",
 							JOptionPane.ERROR_MESSAGE);
-					
+
 					return false;
 				}
 			} else {
@@ -57,10 +57,10 @@ public class UserOperation {
 	public void guardarUser(Usuario usuario) {
 		try {
 
-			String sqlUser = "INSERT INTO usuario (idusuario, passwd, url, salt, tipo) VALUES (?, ?, ?, ?)";
+			String sqlUser = "INSERT INTO usuario (nombreUsuario, passwd, url, salt, tipo) VALUES (?, ?, ?, ?)";
 			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
 
-			preparedStatementUser.setString(1, usuario.getId().trim());
+			preparedStatementUser.setString(1, usuario.getNombreUsuario().trim());
 			preparedStatementUser.setString(2, usuario.getContraseña().trim());
 			preparedStatementUser.setString(3, usuario.getUrl());
 			preparedStatementUser.setString(4, usuario.getSalt());
@@ -79,7 +79,7 @@ public class UserOperation {
 	public Usuario readUsuario(String nombreUsuario) {
 		Usuario usuarioTraido = null;
 		try {
-			String consulta = "SELECT * FROM usuario WHERE idusuario = ?";
+			String consulta = "SELECT * FROM usuario WHERE nombreUsuario = ?";
 			PreparedStatement statement = conexion.prepareStatement(consulta);
 			statement.setString(1, nombreUsuario.trim());
 
@@ -103,22 +103,21 @@ public class UserOperation {
 
 	public void updateUser(Usuario usuario) {
 		try {
-			String sqlUpdate = "UPDATE usuario SET passwd = ?,url= ? ,salt = ?,tipo = ?  WHERE idusuario = ?";
+			String sqlUpdate = "UPDATE usuario SET passwd = ?,url= ? ,salt = ?,tipo = ?  WHERE nombreUsuario = ?";
 			PreparedStatement preparedStatementUpdate = conexion.prepareStatement(sqlUpdate);
 
 			preparedStatementUpdate.setString(1, usuario.getContraseña().trim());
 			preparedStatementUpdate.setString(2, usuario.getUrl());
 			preparedStatementUpdate.setString(2, usuario.getSalt());
 			preparedStatementUpdate.setString(2, usuario.getTipo());
-			preparedStatementUpdate.setString(3, usuario.getId());
+			preparedStatementUpdate.setString(3, usuario.getNombreUsuario());
 
 			int filasActualizadas = preparedStatementUpdate.executeUpdate();
 
 			if (filasActualizadas > 0) {
 				System.out.println("Usuario actualizado en la base de datos correctamente.");
 			} else {
-				System.out.println(
-						"Error al actualizar");
+				System.out.println("Error al actualizar");
 			}
 
 		} catch (SQLException e) {
