@@ -23,22 +23,22 @@ public class Sesion {
 	private List<Tienda> tiendaList;
 	private JFrame vSesion;
 	private Connection db = DatabaseSingleton.getConexion();
-	private JPanel panelTiendas;
+	private JPanel panelSesion;
 	private static Sesion sesion;
-	private String nombreUsuario;
+	private Usuario userActual;
 
 	// Ventana de sesion ya inciada
 	private Sesion(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
+
 		UserOperation operacionesUsuario = new UserOperation(db);
-		Usuario userActual = operacionesUsuario.readUsuario(nombreUsuario);
+		userActual = operacionesUsuario.readUsuario(nombreUsuario);
 		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getId());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vSesion.setIconImage(logo.getImage());
 		ImageIcon userImagen = new ImageIcon(userActual.getUrl());
-		
+
 		Image rUserImagen = userImagen.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		ImageIcon imagenFinal = new ImageIcon(rUserImagen);
 		JLabel imagenPerfil = new JLabel(imagenFinal);
@@ -67,6 +67,16 @@ public class Sesion {
 
 		vSesion.add(imagenPerfil);
 		imagenPerfil.setBounds(0, 0, 50, 50);
+		imagenPerfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				panelSesion.removeAll();
+				panelSesion.revalidate();
+				panelSesion.repaint();
+				new Perfil(panelSesion, userActual);
+			}
+		});
 
 		vSesion.add(cerrarButton);
 		vSesion.setLayout(null);
@@ -78,24 +88,35 @@ public class Sesion {
 
 		tiendaList = obtenerDatosDeTiendas();
 
-		panelTiendas = new JPanel(new FlowLayout());
+		panelSesion = new JPanel(new FlowLayout());
 
 		cargarTiendas();
-		// Agregar el panel de tiendas al JFrame
-		vSesion.add(panelTiendas);
-		panelTiendas.setBounds(0, 150, 800, 400);
-		if (userActual.getTipo() == "Local") {
-			JButton modificarButton = new JButton("Tu Tienda");
-			modificarButton.addActionListener((ActionListener) new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+		// Agregar el panel de Sesion al JFrame
+		vSesion.add(panelSesion);
+		panelSesion.setBounds(0, 150, 800, 400);
 
-					// implementar manejo de tienda
-				}
-			});
-			modificarButton.setBounds(500, 10, 120, 40);
-			vSesion.add(modificarButton);
-			modificarButton.setFocusable(false);
+		JButton modificarButton = new JButton("Tu Tienda");
 
+		modificarButton.addActionListener((ActionListener) new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Editar Tienda");
+				// AGREGAR LAS CARACTERISTICAS DE UNA TIENDA
+			}
+		});
+
+		modificarButton.setBounds(500, 10, 120, 40);
+
+		vSesion.add(modificarButton);
+
+		modificarButton.setFocusable(false);
+
+		System.out.println(userActual.getTipo());
+
+		if ("Local".equals(userActual.getTipo())) {
+			modificarButton.setVisible(true);
+
+		} else {
+			modificarButton.setVisible(false);
 		}
 
 	}
@@ -111,10 +132,10 @@ public class Sesion {
 			imageLabel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					panelTiendas.removeAll();
-					panelTiendas.revalidate();
-					panelTiendas.repaint();
-					new VerTienda(datos, panelTiendas, nombreUsuario);
+					panelSesion.removeAll();
+					panelSesion.revalidate();
+					panelSesion.repaint();
+					new VerTienda(datos, panelSesion, userActual.getId());
 
 				}
 			});
@@ -123,7 +144,7 @@ public class Sesion {
 			tiendaPanel.add(imageLabel);
 			tiendaPanel.add(nombreLabel);
 
-			panelTiendas.add(tiendaPanel);
+			panelSesion.add(tiendaPanel);
 		}
 	}
 

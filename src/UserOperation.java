@@ -27,16 +27,19 @@ public class UserOperation {
 				String hashAlmacenado = resultSet.getString("passwd");
 
 				if (BCrypt.checkpw(contraseña.trim(), hashAlmacenado)) {
-					System.out.println("Autenticación exitosa");
+
 					return true;
 				} else {
-					System.out.println("Contraseña incorrecta");
-					JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+
+					JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrecta", "Error al iniciar",
+							JOptionPane.ERROR_MESSAGE);
+					
 					return false;
 				}
 			} else {
-				System.out.println("Usuario no encontrado");
-				JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+
+				JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrecta", "Error al iniciar",
+						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 		} catch (SQLException e) {
@@ -97,4 +100,31 @@ public class UserOperation {
 		}
 		return usuarioTraido;
 	}
+
+	public void updateUser(Usuario usuario) {
+		try {
+			String sqlUpdate = "UPDATE usuario SET passwd = ?,url= ? ,salt = ?,tipo = ?  WHERE idusuario = ?";
+			PreparedStatement preparedStatementUpdate = conexion.prepareStatement(sqlUpdate);
+
+			preparedStatementUpdate.setString(1, usuario.getContraseña().trim());
+			preparedStatementUpdate.setString(2, usuario.getUrl());
+			preparedStatementUpdate.setString(2, usuario.getSalt());
+			preparedStatementUpdate.setString(2, usuario.getTipo());
+			preparedStatementUpdate.setString(3, usuario.getId());
+
+			int filasActualizadas = preparedStatementUpdate.executeUpdate();
+
+			if (filasActualizadas > 0) {
+				System.out.println("Usuario actualizado en la base de datos correctamente.");
+			} else {
+				System.out.println(
+						"Error al actualizar");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("Error al actualizar el usuario en la base de datos.");
+		}
+	}
+
 }

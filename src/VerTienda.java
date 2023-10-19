@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +18,6 @@ public class VerTienda {
 		JPanel panelTiendaActual = new JPanel();
 		panelTiendaActual.setLayout(new BoxLayout(panelTiendaActual, BoxLayout.Y_AXIS));
 
-		
-		
-		
-		
 		ImageIcon imagenTienda = new ImageIcon(tiendaActual.getUrl());
 		Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
 		ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
@@ -31,11 +26,9 @@ public class VerTienda {
 		JLabel titulo = new JLabel("Tienda: " + tiendaActual.getnombreTienda());
 		panelTiendaActual.add(titulo);
 
-		// Carga los articulos en el array
-		ArrayList<Articulo> articulos = cargarArticulos(tiendaActual.getnombreTienda());
-
+		cargarArticulos(tiendaActual);
 		// Recorrer y mostrar los datos de los artículos
-		for (Articulo articulo : articulos) {
+		for (Articulo articulo : tiendaActual.getArticulos()) {
 			JLabel nombreArticulo = new JLabel("Nombre: " + articulo.getNombreArt());
 			JLabel precioArticulo = new JLabel("Precio: " + articulo.getPrecio());
 
@@ -51,6 +44,7 @@ public class VerTienda {
 				panelTienda.removeAll();
 				panelTienda.revalidate();
 				panelTienda.repaint();
+				tiendaActual.setArticulos(new ArrayList<>());
 				Sesion sesion = Sesion.getInstancia(nombreUsuario);
 				sesion.cargarTiendas();
 			}
@@ -58,28 +52,27 @@ public class VerTienda {
 		panelTienda.add(volverButton);
 	}
 
-	private ArrayList<Articulo> cargarArticulos(String nombreTienda) {
-		ArrayList<Articulo> articulos = new ArrayList<>();
+	private void cargarArticulos(Tienda tienda) {
+
 		try {
 			PreparedStatement statement = db.prepareStatement(
 
 					"SELECT nombreArt, precio, url,cantidad FROM articulo Where nombreTienda= ?");
-			statement.setString(1, nombreTienda);
+			statement.setString(1, tienda.getnombreTienda());
 			ResultSet resultSet = statement.executeQuery();
 			{
-
 				while (resultSet.next()) {
+
 					String nombreArt = resultSet.getString("nombreArt");
 					double precio = resultSet.getDouble("precio");
 					String url = resultSet.getString("url");
 					int cantidad = resultSet.getInt("cantidad");
-					articulos.add(new Articulo(nombreTienda, nombreArt, precio, cantidad, url));
 
+					tienda.agregarArticulo(new Articulo(tienda.getnombreTienda(), nombreArt, precio, cantidad, url));
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return articulos;
 	}
 }
