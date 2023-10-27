@@ -12,6 +12,12 @@ public class Articulo {
 		this.cantidad = cantidad;
 		this.url = url;
 	}
+	
+	@Override
+	public String toString() {
+		return "Articulo [nombreTienda=" + nombreTienda + ", nombreArt=" + nombreArt + ", precio=" + precio
+				+ ", cantidad=" + cantidad + ", url=" + url + "]";
+	}
 
 	public String getNombreTienda() {
 		return nombreTienda;

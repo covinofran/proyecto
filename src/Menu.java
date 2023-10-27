@@ -25,7 +25,6 @@ public class Menu {
 				vMenu.dispose();
 			}
 		});
-
 		JButton iniciarSesionButton = new JButton("Iniciar Sesión");
 		iniciarSesionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -68,5 +67,4 @@ public class Menu {
 		vMenu.setLocationRelativeTo(null);
 		vMenu.setVisible(true);
 	}
-
 }

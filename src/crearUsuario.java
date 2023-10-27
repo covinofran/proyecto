@@ -76,7 +76,6 @@ public class CrearUsuario {
 				String hashed = BCrypt.hashpw(contra, salt);
 				// Tipo de usuario(Cliente/Local)
 				String tipo = (String) tipoComboBox.getSelectedItem();
-
 				/*
 				 * LA VARIABLE CONTRA Y HASHED SON USADAS PARA TESTEAR SI EL ENCRIPTADO
 				 * FUNCIONA, HAY QUE ACOMODAR LA IMPLEMENTACION DE ESTO, EL IF SIGUIENTE ESTA
@@ -87,7 +86,6 @@ public class CrearUsuario {
 				 * if (BCrypt.checkpw(contra, hashed)) System.out.println("It matches"); else
 				 * System.out.println("It does not match");
 				 */
-
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
 				UserOperation operacionesUsuario = new UserOperation(db);
 				operacionesUsuario.guardarUser(datosUsuario);
@@ -99,30 +97,6 @@ public class CrearUsuario {
 
 				}
 				datosUsuario.toString();
-
-				/*
-				 * ESTO YA ESTA OBSOLETO, QUEDA PARA CONSULTA O REFERENCIA PRINTS. PARA VER EN
-				 * CONSOLA LOS DATOS CARGADOS UNICAMENTE VER COMO CARGA LOS DATOS Y LAS
-				 * MODIFICACIONES QUE SE HACEN EN QUE AFECTAN, TENER EN CUENTA ESTO PARA EDITAR
-				 * LOS MISMOS
-				 * 
-				 * if ("Cliente".equals(seleccion)) { UsuarioFactory clienteFactory = new
-				 * ClienteFactory(); Usuario cliente = clienteFactory.crearUsuario(usuario,
-				 * hashed, url, salt);
-				 * 
-				 * System.out.println("Usuario Cliente:"); System.out.println("ID: " +
-				 * cliente.getId()); System.out.println("Contraseña: " +
-				 * cliente.getContraseña()); System.out.println("Ruta Iamagen: " +
-				 * cliente.getUrl());
-				 * 
-				 * conexion.guardarUser(cliente); } else if ("Local".equals(seleccion)) {
-				 * UsuarioFactory localFactory = new LocalFactory(); Usuario local =
-				 * localFactory.crearUsuario(usuario, hashed, url, salt);
-				 * System.out.println("Usuario Local:"); System.out.println("ID: " +
-				 * local.getId()); System.out.println("Contraseña: " + local.getContraseña());
-				 * System.out.println("Ruta Imangen: " + local.getUrl());
-				 * conexion.guardarUser(local); }
-				 */
 			}
 		});
 

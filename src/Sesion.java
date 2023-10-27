@@ -46,7 +46,7 @@ public class Sesion {
 		JButton cerrarButton = new JButton("Cerrar Sesion");
 		cerrarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				sesion = null;
 				vSesion.dispose();
 				new Menu();
 			}
@@ -60,7 +60,6 @@ public class Sesion {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
 				System.exit(0);
 			}
 		});
@@ -114,10 +113,9 @@ public class Sesion {
 		} else {
 			modificarButton.setVisible(false);
 		}
-
 	}
 
-//METODOS   
+	//METODOS   
 	public void cargarTiendas() {
 		for (Tienda datos : tiendaList) {
 			ImageIcon imagenTienda = new ImageIcon(datos.getUrl());

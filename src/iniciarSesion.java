@@ -43,7 +43,7 @@ public class IniciarSesion {
 
 				UserOperation operacionesUsuario = new UserOperation(db);
 				if (operacionesUsuario.autenticarUsuario(nombreUsuario, contra, vIniciarSesion)) {
-
+					//investigar la creacion y uso de clases privadas
 					vIniciarSesion.dispose();
 					Sesion.getInstancia(nombreUsuario);
 				}
@@ -88,5 +88,4 @@ public class IniciarSesion {
 		vIniciarSesion.setVisible(true);
 		vIniciarSesion.setLocationRelativeTo(null);
 	}
-
 }

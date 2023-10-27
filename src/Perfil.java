@@ -21,9 +21,10 @@ public class Perfil {
 	private JPanel panelSesionInferior;
 
 	public Perfil(JPanel panelSesion, Usuario userActual) {
+		
 		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
 		System.out.println(userActual.toString());
-
+		
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelSesionInferior = new JPanel();
 		panelSesionInferior.setLayout(new GridLayout(5, 2));
@@ -65,9 +66,9 @@ public class Perfil {
 				UserOperation operacionesUsuario = new UserOperation(db);
 				operacionesUsuario.updateUser(datosUsuario);
 				if (tipo == "local") {
-					Tienda tienda = new Tienda("Tienda Pepito", userActual.getNombreUsuario(), url);
+					Tienda tienda = new Tienda(userActual.getNombreUsuario(), userActual.getNombreUsuario(), url);
 					// CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
-					tienda.toString();
+					System.out.println(tienda.toString());
 				}
 				System.out.println(datosUsuario.toString());
 			}

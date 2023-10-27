@@ -57,7 +57,7 @@ public class UserOperation {
 	public void guardarUser(Usuario usuario) {
 		try {
 
-			String sqlUser = "INSERT INTO usuario (nombreUsuario, passwd, url, salt, tipo) VALUES (?, ?, ?, ?)";
+			String sqlUser = "INSERT INTO usuario (nombreUsuario, passwd, url, salt, tipo) VALUES (?, ?, ?, ?,?)";
 			PreparedStatement preparedStatementUser = conexion.prepareStatement(sqlUser);
 
 			preparedStatementUser.setString(1, usuario.getNombreUsuario().trim());

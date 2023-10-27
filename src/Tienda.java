@@ -11,7 +11,6 @@ public class Tienda {
 		this.nombreUsuario = nombreUsuario;
 		this.articulos = new ArrayList<>();
 		this.url = url;
-
 	}
 
 	public void agregarArticulo(Articulo articulo) {
