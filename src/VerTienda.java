@@ -54,8 +54,8 @@ public class VerTienda {
 						stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) - 1);
 
 						for (Articulo articulo : userActual.getCarrito()) {
-							System.out.println(articulo.getNombreArt());
-							System.out.println("Quedan: " + stock.get(articulo.getNombreArt()));
+							System.out.println(
+									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
 
 						}
 						System.out.println("------------------------------------------------");
@@ -73,8 +73,8 @@ public class VerTienda {
 
 						for (Articulo articulo : userActual.getCarrito()) {
 
-							System.out.println(articulo.getNombreArt());
-							System.out.println("Quedan: " + stock.get(articulo.getNombreArt()));
+							System.out.println(
+									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
 
 						}
 						System.out.println("------------------------------------------------");
@@ -113,7 +113,7 @@ public class VerTienda {
 						// Si no está en el mapa, agrega el artículo con una cantidad inicial de 1
 						compra.put(nombreArticulo, 1);
 					}
-					System.out.println(articulo.toString());
+					// System.out.println(articulo.toString());
 					// System.out.println(stock);
 
 				}
@@ -128,7 +128,7 @@ public class VerTienda {
 				panelTienda.revalidate();
 				panelTienda.repaint();
 				tiendaActual.setArticulos(new ArrayList<>());
-				Sesion sesion = Sesion.getInstancia(userActual.getNombreUsuario());
+				Sesion sesion = Sesion.getInstancia(userActual);
 				sesion.cargarTiendas();
 			}
 		});

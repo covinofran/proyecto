@@ -41,7 +41,7 @@ public class CrearUsuario {
 
 		// Etiqueta y campo de selección para el tipo de usuario
 		vCrearUsuario.add(new JLabel("Tipo de Usuario:"));
-		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
+		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Tienda" });
 		vCrearUsuario.add(tipoComboBox);
 
 		// Etiqueta y campo de texto para el nombre de usuario
@@ -87,16 +87,14 @@ public class CrearUsuario {
 				 * System.out.println("It does not match");
 				 */
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
-				UserOperation operacionesUsuario = new UserOperation(db);
-				operacionesUsuario.guardarUser(datosUsuario);
-
-				if (tipo == "local") {
+				datosUsuario.create();
+				if (tipo == "Tienda") {
 					Tienda tienda = new Tienda(nombre, nombre, url);
-					// FALTA CARGAR LA TIENDA
+					
+					tienda.create();
 					System.out.println(tienda.toString());
-
 				}
-				datosUsuario.toString();
+				System.out.println(datosUsuario.toString());
 			}
 		});
 

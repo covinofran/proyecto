@@ -28,10 +28,10 @@ public class Sesion {
 	private Usuario userActual;
 
 	// Ventana de sesion ya inciada
-	private Sesion(String nombreUsuario) {
+	private Sesion(Usuario userActual) {
 
-		UserOperation operacionesUsuario = new UserOperation(db);
-		userActual = operacionesUsuario.readUsuario(nombreUsuario);
+		this.userActual=userActual;
+		
 		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getNombreUsuario());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -107,7 +107,7 @@ public class Sesion {
 		modificarButton.setFocusable(false);
 		vSesion.add(modificarButton);
 
-		if ("Local".equals(userActual.getTipo())) {
+		if ("Tienda".equals(userActual.getTipo())) {
 			modificarButton.setVisible(true);
 
 		} else {
@@ -115,7 +115,7 @@ public class Sesion {
 		}
 	}
 
-	//METODOS   
+	// METODOS
 	public void cargarTiendas() {
 		for (Tienda datos : tiendaList) {
 			ImageIcon imagenTienda = new ImageIcon(datos.getUrl());
@@ -159,9 +159,9 @@ public class Sesion {
 		return tiendas;
 	}
 
-	public static synchronized Sesion getInstancia(String nombreUsuario) {
+	public static synchronized Sesion getInstancia(Usuario userActual) {
 		if (sesion == null) {
-			sesion = new Sesion(nombreUsuario);
+			sesion = new Sesion(userActual);
 		}
 		return sesion;
 	}

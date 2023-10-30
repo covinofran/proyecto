@@ -17,7 +17,6 @@ public class Perfil {
 	private JButton enviarButton;
 	private JButton volverButton;
 	private String url;
-	private Connection db = DatabaseSingleton.getConexion();
 	private JPanel panelSesionInferior;
 
 	public Perfil(JPanel panelSesion, Usuario userActual) {
@@ -63,11 +62,11 @@ public class Perfil {
 				String tipo = (String) tipoComboBox.getSelectedItem();
 
 				Usuario datosUsuario = new Usuario(userActual.getNombreUsuario(), hashed, url, salt, tipo);
-				UserOperation operacionesUsuario = new UserOperation(db);
-				operacionesUsuario.updateUser(datosUsuario);
+				datosUsuario.update();
 				if (tipo == "local") {
 					Tienda tienda = new Tienda(userActual.getNombreUsuario(), userActual.getNombreUsuario(), url);
 					// CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
+					tienda.create();
 					System.out.println(tienda.toString());
 				}
 				System.out.println(datosUsuario.toString());
@@ -80,7 +79,7 @@ public class Perfil {
 				panelSesion.removeAll();
 				panelSesion.revalidate();
 				panelSesion.repaint();
-				Sesion sesion = Sesion.getInstancia(userActual.getNombreUsuario());
+				Sesion sesion = Sesion.getInstancia(userActual);
 				sesion.cargarTiendas();
 			}
 		});

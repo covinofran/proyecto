@@ -40,12 +40,14 @@ public class IniciarSesion {
 
 				String nombreUsuario = nombreTextField.getText();
 				String contra = new String(contraseñaField.getPassword());
+				Usuario user = new Usuario(nombreUsuario, null, null, null, null);
+				user.read();
 
-				UserOperation operacionesUsuario = new UserOperation(db);
-				if (operacionesUsuario.autenticarUsuario(nombreUsuario, contra, vIniciarSesion)) {
-					//investigar la creacion y uso de clases privadas
+				if (user.autenticarUsuario(contra, vIniciarSesion)) {
+					// investigar la creacion y uso de clases privadas
+
 					vIniciarSesion.dispose();
-					Sesion.getInstancia(nombreUsuario);
+					Sesion.getInstancia(user);
 				}
 			}
 		});
