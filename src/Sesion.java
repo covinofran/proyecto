@@ -30,8 +30,8 @@ public class Sesion {
 	// Ventana de sesion ya inciada
 	private Sesion(Usuario userActual) {
 
-		this.userActual=userActual;
-		
+		this.userActual = userActual;
+
 		vSesion = new JFrame("Sesión Iniciada - Usuario: " + userActual.getNombreUsuario());
 		vSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -46,8 +46,7 @@ public class Sesion {
 		JButton cerrarButton = new JButton("Cerrar Sesion");
 		cerrarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sesion = null;
-				vSesion.dispose();
+				salir();
 				new Menu();
 			}
 		});
@@ -85,10 +84,7 @@ public class Sesion {
 		cerrarButton.setBounds(650, 10, 120, 40);
 		cerrarButton.setFocusable(false);
 
-		tiendaList = obtenerDatosDeTiendas();
-
 		panelSesion = new JPanel(new FlowLayout());
-
 		cargarTiendas();
 		// Agregar el panel de Sesion al JFrame
 		vSesion.add(panelSesion);
@@ -117,6 +113,8 @@ public class Sesion {
 
 	// METODOS
 	public void cargarTiendas() {
+		Tienda tienda = new Tienda(null, null, null);
+		tiendaList = tienda.getAll();
 		for (Tienda datos : tiendaList) {
 			ImageIcon imagenTienda = new ImageIcon(datos.getUrl());
 			Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
@@ -142,27 +140,16 @@ public class Sesion {
 		}
 	}
 
-	private ArrayList<Tienda> obtenerDatosDeTiendas() {
-		ArrayList<Tienda> tiendas = new ArrayList<>();
-		try (PreparedStatement statement = db.prepareStatement("SELECT nombreTienda, nombreUsuario, url FROM tienda");
-				ResultSet resultSet = statement.executeQuery()) {
-
-			while (resultSet.next()) {
-				String nombreTienda = resultSet.getString("nombreTienda");
-
-				String url = resultSet.getString("url");
-				tiendas.add(new Tienda(nombreTienda, null, url));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return tiendas;
-	}
-
 	public static synchronized Sesion getInstancia(Usuario userActual) {
 		if (sesion == null) {
 			sesion = new Sesion(userActual);
 		}
 		return sesion;
 	}
+
+	public void salir() {
+		sesion = null;
+		vSesion.dispose();
+	}
+
 }

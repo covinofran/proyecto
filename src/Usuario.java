@@ -4,13 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class Usuario implements dbOperation {
+public class Usuario implements DbOperation<Usuario> {
 	private Connection db;
 	private String nombreUsuario;
 	private String contraseña;
@@ -104,12 +102,12 @@ public class Usuario implements dbOperation {
 			preparedStatementUser.setString(4, salt);
 			preparedStatementUser.setString(5, tipo);
 			preparedStatementUser.executeUpdate();
-
-			System.out.println("Usuario guardado en la base de datos correctamente.");
+			JOptionPane.showMessageDialog(null, "Usuario guardado en la base de datos correctamente.", "Alerta",
+					JOptionPane.WARNING_MESSAGE);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("Error al guardar el usuario en la base de datos.");
+			JOptionPane.showMessageDialog(null, "Error al crear el Usuario.", "Alerta", JOptionPane.WARNING_MESSAGE);
 
 		}
 	}
@@ -129,14 +127,18 @@ public class Usuario implements dbOperation {
 			int filasActualizadas = preparedStatementUpdate.executeUpdate();
 
 			if (filasActualizadas > 0) {
-				System.out.println("Usuario actualizado en la base de datos correctamente.");
+				JOptionPane.showMessageDialog(null, "Usuario actualizado en la base de datos correctamente.", "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+
 			} else {
-				System.out.println("Error al actualizar");
+				JOptionPane.showMessageDialog(null, "Error al actualizar.", "Alerta", JOptionPane.WARNING_MESSAGE);
+
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("Error al actualizar el usuario en la base de datos.");
+			JOptionPane.showMessageDialog(null, "Error al actualizar.", "Alerta", JOptionPane.WARNING_MESSAGE);
+
 		}
 	}
 
@@ -166,21 +168,35 @@ public class Usuario implements dbOperation {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-
+		try {
+			String deleteQuery = "DELETE FROM usuario WHERE nombreUsuario = ?";
+			PreparedStatement preparedStatement = db.prepareStatement(deleteQuery);
+			preparedStatement.setString(1, nombreUsuario);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Usuario Eliminado correctamente.", "Alerta",
+					JOptionPane.WARNING_MESSAGE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al eliminar.", "Alerta", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
-	public boolean autenticarUsuario(String contra, JFrame frame) {
+	public boolean autenticarUsuario(String contra) {
 
 		if (BCrypt.checkpw(contra.trim(), this.contraseña)) {
 			return true;
 		} else {
 
-			JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrecta", "Error al iniciar",
+			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Error al iniciar",
 					JOptionPane.ERROR_MESSAGE);
-
 			return false;
 		}
+	}
 
+	@Override
+	public List<Usuario> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -8,7 +8,7 @@ class TiendaTest {
 	void test() {
 		Tienda tienda = new Tienda("tiedapau","pau","logo");
 		
-		assertAll(() -> assertEquals("tiendapau", tienda.getNombreTienda()), () -> assertEquals("pau", tienda.getnombreUsuario()),
+		assertAll(() -> assertEquals("tiendapau", tienda.getNombreTienda()), () -> assertEquals("pau", tienda.getNombreUsuario()),
 				() -> assertEquals("logo", tienda.getUrl()));
 	}
 }

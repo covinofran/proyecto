@@ -42,13 +42,18 @@ public class IniciarSesion {
 				String contra = new String(contraseñaField.getPassword());
 				Usuario user = new Usuario(nombreUsuario, null, null, null, null);
 				user.read();
+				if (user.getContraseña() != null) {
+					if (user.autenticarUsuario(contra)) {
+						// investigar la creacion y uso de clases privadas
 
-				if (user.autenticarUsuario(contra, vIniciarSesion)) {
-					// investigar la creacion y uso de clases privadas
-
-					vIniciarSesion.dispose();
-					Sesion.getInstancia(user);
+						vIniciarSesion.dispose();
+						Sesion.getInstancia(user);
+					}
+				} else {
+					JOptionPane.showMessageDialog(vIniciarSesion, "Usuario o contraseña incorrecta", "Error al iniciar",
+							JOptionPane.ERROR_MESSAGE);
 				}
+
 			}
 		});
 

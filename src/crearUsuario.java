@@ -90,11 +90,13 @@ public class CrearUsuario {
 				datosUsuario.create();
 				if (tipo == "Tienda") {
 					Tienda tienda = new Tienda(nombre, nombre, url);
-					
+
 					tienda.create();
 					System.out.println(tienda.toString());
 				}
 				System.out.println(datosUsuario.toString());
+				vCrearUsuario.dispose();
+				new Menu();
 			}
 		});
 

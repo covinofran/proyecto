@@ -3,8 +3,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Tienda implements dbOperation {
+import javax.swing.JOptionPane;
+
+public class Tienda implements DbOperation<Tienda> {
 	private ArrayList<Articulo> articulos;
 	private String nombreTienda;
 	private String nombreUsuario;
@@ -43,11 +46,11 @@ public class Tienda implements dbOperation {
 		this.nombreTienda = nombreTienda;
 	}
 
-	public String getnombreUsuario() {
+	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
 
-	public void setnombreUsuario(String nombreUsuario) {
+	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
 	}
 
@@ -74,17 +77,19 @@ public class Tienda implements dbOperation {
 			preparedStatement.setString(3, url);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Usuario creado exitosamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al crear la tienda.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
 	@Override
 	public Tienda read() {
 		try {
-			String selectQuery = "SELECT * FROM tienda WHERE nombreTienda = ?";
+			String selectQuery = "SELECT * FROM tienda WHERE nombreUsuario = ?";
 			PreparedStatement preparedStatement = db.prepareStatement(selectQuery);
-			preparedStatement.setString(1, nombreTienda);
+			preparedStatement.setString(1, nombreUsuario);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -121,14 +126,32 @@ public class Tienda implements dbOperation {
 	@Override
 	public void delete() {
 		try {
-			String deleteQuery = "DELETE FROM tienda WHERE nombreTienda = ?";
+			String deleteQuery = "DELETE FROM tienda WHERE nombreUsuario = ?";
 			PreparedStatement preparedStatement = db.prepareStatement(deleteQuery);
-			preparedStatement.setString(1, nombreTienda);
+			preparedStatement.setString(1, nombreUsuario);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<Tienda> getAll() {
+		List<Tienda> tiendas = new ArrayList<>();
+		String sql = "SELECT * FROM tienda";
+		try {
+			PreparedStatement statement = db.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				Tienda tienda = new Tienda(result.getString("nombreTienda"), result.getString("nombreUsuario"),
+						result.getString("url"));
+				tiendas.add(tienda);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tiendas;
 	}
 
 }

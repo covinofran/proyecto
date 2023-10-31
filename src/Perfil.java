@@ -1,11 +1,11 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import org.mindrot.jbcrypt.BCrypt;
@@ -16,14 +16,15 @@ public class Perfil {
 	private JButton cargarImagenButton;
 	private JButton enviarButton;
 	private JButton volverButton;
+	private JButton eliminarButton;
 	private String url;
 	private JPanel panelSesionInferior;
 
 	public Perfil(JPanel panelSesion, Usuario userActual) {
-		
+
 		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
 		System.out.println(userActual.toString());
-		
+
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelSesionInferior = new JPanel();
 		panelSesionInferior.setLayout(new GridLayout(5, 2));
@@ -63,12 +64,15 @@ public class Perfil {
 
 				Usuario datosUsuario = new Usuario(userActual.getNombreUsuario(), hashed, url, salt, tipo);
 				datosUsuario.update();
-				if (tipo == "local") {
-					Tienda tienda = new Tienda(userActual.getNombreUsuario(), userActual.getNombreUsuario(), url);
+				Tienda tienda = new Tienda(userActual.getNombreUsuario(), userActual.getNombreUsuario(), url);
+				if (tipo == "Tienda") {	
 					// CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
 					tienda.create();
 					System.out.println(tienda.toString());
+				}else if(tipo =="Cliente"){
+					tienda.delete();	
 				}
+				
 				System.out.println(datosUsuario.toString());
 			}
 		});
@@ -83,9 +87,32 @@ public class Perfil {
 				sesion.cargarTiendas();
 			}
 		});
+		eliminarButton = new JButton("Borrar");
+		eliminarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int confirmacion = JOptionPane.showConfirmDialog(null,
+						"¿Estás seguro de que deseas eliminar el usuario?", "Confirmar Eliminación",
+						JOptionPane.YES_NO_OPTION);
+				if (confirmacion == JOptionPane.YES_OPTION) {
+
+					if ("Tienda".equals(userActual.getTipo())) {
+						Tienda tienda = new Tienda(null, userActual.getNombreUsuario(), null);
+						tienda.delete();
+
+					}
+					userActual.delete();
+					Sesion sesion = Sesion.getInstancia(userActual);
+					sesion.salir();
+					new Menu();
+
+				}
+			}
+		});
+
 		panelSesionInferior.add(cargarImagenButton);
 		panelSesionInferior.add(enviarButton);
 		panelSesionInferior.add(volverButton);
+		panelSesionInferior.add(eliminarButton);
 		panelSesion.add(panelSesionInferior);
 	}
 

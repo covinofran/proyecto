@@ -1,5 +1,6 @@
+import java.util.List;
 
-public interface dbOperation {
+public interface DbOperation<T> {
 	public void create();
 
 	public void update();
@@ -7,5 +8,7 @@ public interface dbOperation {
 	public Object read();
 
 	public void delete();
+
+	List<T> getAll();
 
 }

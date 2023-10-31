@@ -2,8 +2,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class Articulo implements dbOperation {
+public class Articulo implements DbOperation<Articulo> {
 	private String nombreTienda;
 	private String nombreArt;
 	private double precio;
@@ -139,6 +140,12 @@ public class Articulo implements dbOperation {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<Articulo> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
