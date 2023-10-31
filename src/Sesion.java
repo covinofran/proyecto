@@ -7,10 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -72,7 +69,7 @@ public class Sesion {
 				panelSesion.removeAll();
 				panelSesion.revalidate();
 				panelSesion.repaint();
-				new Perfil(panelSesion, userActual);
+				new EditarPerfil(panelSesion, userActual);
 			}
 		});
 
@@ -94,8 +91,12 @@ public class Sesion {
 
 		modificarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Editar Tienda");
+				
 				// AGREGAR LAS CARACTERISTICAS DE UNA TIENDA
+				panelSesion.removeAll();
+				panelSesion.revalidate();
+				panelSesion.repaint();
+				new EditarTienda(panelSesion, userActual);
 			}
 		});
 

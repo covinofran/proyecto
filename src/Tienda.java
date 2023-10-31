@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Tienda implements DbOperation<Tienda> {
-	private ArrayList<Articulo> articulos;
+	private List<Articulo> articulos;
 	private String nombreTienda;
 	private String nombreUsuario;
 	private String url;
@@ -30,11 +30,11 @@ public class Tienda implements DbOperation<Tienda> {
 		articulos.remove(articulo);
 	}
 
-	public ArrayList<Articulo> getArticulos() {
+	public List<Articulo> getArticulos() {
 		return articulos;
 	}
 
-	public void setArticulos(ArrayList<Articulo> articulos) {
+	public void setArticulos(List<Articulo> articulos) {
 		this.articulos = articulos;
 	}
 
@@ -111,15 +111,17 @@ public class Tienda implements DbOperation<Tienda> {
 	@Override
 	public void update() {
 		try {
-			String updateQuery = "UPDATE tienda SET nombreUsuario = ?, url = ? WHERE nombreTienda = ?";
+			String updateQuery = "UPDATE tienda SET nombreTienda = ?, url = ? WHERE nombreUsuario = ?";
 			PreparedStatement preparedStatement = db.prepareStatement(updateQuery);
-			preparedStatement.setString(1, nombreUsuario);
+			preparedStatement.setString(1, nombreTienda);
 			preparedStatement.setString(2, url);
-			preparedStatement.setString(3, nombreTienda);
+			preparedStatement.setString(3, nombreUsuario);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Tienda actualizada exitosamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al actualizar los datos.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

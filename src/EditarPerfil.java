@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class Perfil {
+public class EditarPerfil {
 	private JComboBox<String> tipoComboBox;
 	private JPasswordField contrasenaField;
 	private JButton cargarImagenButton;
@@ -20,19 +20,20 @@ public class Perfil {
 	private String url;
 	private JPanel panelSesionInferior;
 
-	public Perfil(JPanel panelSesion, Usuario userActual) {
+	public EditarPerfil(JPanel panelSesion, Usuario userActual) {
 
-		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
-		System.out.println(userActual.toString());
-
+		
+		this.url=userActual.getUrl();
+		
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelSesionInferior = new JPanel();
 		panelSesionInferior.setLayout(new GridLayout(5, 2));
-
+		panelSesionInferior.add(new JLabel("Editar Perfil del usuario: "+userActual.getNombreUsuario()));
+		panelSesionInferior.add(new JLabel());
 		panelSesionInferior.add(new JLabel("Tipo de Usuario:"));
-		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Local" });
+		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Tienda" });
 		panelSesionInferior.add(tipoComboBox);
-
+		
 		// Etiqueta y campo de contraseña
 		panelSesionInferior.add(new JLabel("Contraseña:"));
 		contrasenaField = new JPasswordField();
@@ -65,14 +66,14 @@ public class Perfil {
 				Usuario datosUsuario = new Usuario(userActual.getNombreUsuario(), hashed, url, salt, tipo);
 				datosUsuario.update();
 				Tienda tienda = new Tienda(userActual.getNombreUsuario(), userActual.getNombreUsuario(), url);
-				if (tipo == "Tienda") {	
+				if (tipo == "Tienda") {
 					// CARGARLA EN LA BASE DE DATOS, ANTES PREGUNTAR SI EXISTE
 					tienda.create();
 					System.out.println(tienda.toString());
-				}else if(tipo =="Cliente"){
-					tienda.delete();	
+				} else if (tipo == "Cliente") {
+					tienda.delete();
 				}
-				
+
 				System.out.println(datosUsuario.toString());
 			}
 		});
@@ -91,7 +92,7 @@ public class Perfil {
 		eliminarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null,
-						"¿Estás seguro de que deseas eliminar el usuario?", "Confirmar Eliminación",
+						"¿Estás seguro de que deseas eliminar el usuario? Sera eliminada su tienda en caso de poseer una", "Confirmar Eliminación",
 						JOptionPane.YES_NO_OPTION);
 				if (confirmacion == JOptionPane.YES_OPTION) {
 
@@ -111,8 +112,8 @@ public class Perfil {
 
 		panelSesionInferior.add(cargarImagenButton);
 		panelSesionInferior.add(enviarButton);
-		panelSesionInferior.add(volverButton);
 		panelSesionInferior.add(eliminarButton);
+		panelSesionInferior.add(volverButton);
 		panelSesion.add(panelSesionInferior);
 	}
 

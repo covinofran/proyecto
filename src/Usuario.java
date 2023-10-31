@@ -120,9 +120,9 @@ public class Usuario implements DbOperation<Usuario> {
 
 			preparedStatementUpdate.setString(1, this.contraseña.trim());
 			preparedStatementUpdate.setString(2, this.url);
-			preparedStatementUpdate.setString(2, this.salt);
-			preparedStatementUpdate.setString(2, this.tipo);
-			preparedStatementUpdate.setString(3, this.nombreUsuario);
+			preparedStatementUpdate.setString(3, this.salt);
+			preparedStatementUpdate.setString(4, this.tipo);
+			preparedStatementUpdate.setString(5, this.nombreUsuario);
 
 			int filasActualizadas = preparedStatementUpdate.executeUpdate();
 

@@ -1,19 +1,13 @@
 import javax.swing.*;
-
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
 public class VerTienda {
-	private Connection db = DatabaseSingleton.getConexion();
 
 	public VerTienda(Tienda tiendaActual, JPanel panelTienda, Usuario userActual) {
 		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
@@ -32,8 +26,8 @@ public class VerTienda {
 		panelTiendaActual.add(titulo);
 
 		Map<String, Integer> stock = new HashMap<>();
-		cargarArticulos(tiendaActual);
-
+		Articulo art = new Articulo(tiendaActual.getNombreTienda(), null, 0, 0, null);
+		tiendaActual.setArticulos(art.getAll());
 		// Recorrer y mostrar los datos de los artículos
 		for (Articulo articulo : tiendaActual.getArticulos()) {
 
@@ -43,7 +37,9 @@ public class VerTienda {
 			itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
 			JLabel nombreArticulo = new JLabel("Nombre: " + articulo.getNombreArt());
 			JLabel precioArticulo = new JLabel("Precio: " + articulo.getPrecio());
+
 			stock.put(articulo.getNombreArt(), articulo.getCantidad());
+
 			JButton addButton = new JButton("+");
 			addButton.addActionListener((ActionListener) new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -89,6 +85,7 @@ public class VerTienda {
 			panelTiendaActual.add(itemPanel);
 		}
 		panelTienda.add(panelTiendaActual);
+
 		// Agregar el panel de la tienda actual al panel principal
 		JButton comprarButton = new JButton("Comprar");
 		comprarButton.addActionListener((ActionListener) new ActionListener() {
@@ -137,27 +134,4 @@ public class VerTienda {
 		panelTienda.add(panelTiendaActual);
 	}
 
-	private void cargarArticulos(Tienda tienda) {
-
-		try {
-			PreparedStatement statement = db.prepareStatement(
-
-					"SELECT nombreArt, precio, url,cantidad FROM articulo Where nombreTienda= ?");
-			statement.setString(1, tienda.getNombreTienda());
-			ResultSet resultSet = statement.executeQuery();
-			{
-				while (resultSet.next()) {
-
-					String nombreArt = resultSet.getString("nombreArt");
-					double precio = resultSet.getDouble("precio");
-					String url = resultSet.getString("url");
-					int cantidad = resultSet.getInt("cantidad");
-
-					tienda.agregarArticulo(new Articulo(tienda.getNombreTienda(), nombreArt, precio, cantidad, url));
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }

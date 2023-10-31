@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Articulo implements DbOperation<Articulo> {
@@ -144,8 +145,24 @@ public class Articulo implements DbOperation<Articulo> {
 
 	@Override
 	public List<Articulo> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Articulo> articulos = new ArrayList<>();
+		
+		try {
+			PreparedStatement statement = db.prepareStatement(
+
+					"SELECT * FROM articulo Where nombreTienda= ?");
+			statement.setString(1, nombreTienda);
+			ResultSet resultSet = statement.executeQuery();
+			{
+				while (resultSet.next()) {
+					Articulo articulo= new Articulo(resultSet.getString("nombreTienda"),resultSet.getString("nombreArt"),resultSet.getDouble("precio"),resultSet.getInt("cantidad"),resultSet.getString("url"));
+					articulos.add(articulo);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return articulos;
 	}
 
 }
