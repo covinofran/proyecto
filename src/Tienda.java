@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-public class Tienda implements DbOperation<Tienda> {
+public class Tienda {
 	private List<Articulo> articulos;
 	private String nombreTienda;
 	private String nombreUsuario;
@@ -67,7 +67,6 @@ public class Tienda implements DbOperation<Tienda> {
 		return "Tienda [nombreTienda=" + nombreTienda + ", nombreUsuario=" + nombreUsuario + ", url=" + url + "]";
 	}
 
-	@Override
 	public void create() {
 		try {
 			String insertQuery = "INSERT INTO tienda (nombreTienda, nombreUsuario, url) VALUES (?, ?, ?)";
@@ -84,7 +83,6 @@ public class Tienda implements DbOperation<Tienda> {
 		}
 	}
 
-	@Override
 	public Tienda read() {
 		try {
 			String selectQuery = "SELECT * FROM tienda WHERE nombreUsuario = ?";
@@ -108,7 +106,6 @@ public class Tienda implements DbOperation<Tienda> {
 		return this; // Devuelve la instancia de Tienda actualizada
 	}
 
-	@Override
 	public void update() {
 		try {
 			String updateQuery = "UPDATE tienda SET nombreTienda = ?, url = ? WHERE nombreUsuario = ?";
@@ -125,7 +122,6 @@ public class Tienda implements DbOperation<Tienda> {
 		}
 	}
 
-	@Override
 	public void delete() {
 		try {
 			String deleteQuery = "DELETE FROM tienda WHERE nombreUsuario = ?";
@@ -138,7 +134,6 @@ public class Tienda implements DbOperation<Tienda> {
 		}
 	}
 
-	@Override
 	public List<Tienda> getAll() {
 		List<Tienda> tiendas = new ArrayList<>();
 		String sql = "SELECT * FROM tienda";

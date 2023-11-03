@@ -86,8 +86,10 @@ public class CrearUsuario {
 				 * if (BCrypt.checkpw(contra, hashed)) System.out.println("It matches"); else
 				 * System.out.println("It does not match");
 				 */
+				
 				Usuario datosUsuario = new Usuario(nombre, hashed, url, salt, tipo);
 				datosUsuario.create();
+				
 				if (tipo == "Tienda") {
 					Tienda tienda = new Tienda(nombre, nombre, url);
 

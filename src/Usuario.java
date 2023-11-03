@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class Usuario implements DbOperation<Usuario> {
+public class Usuario {
 	private Connection db;
 	private String nombreUsuario;
 	private String contraseña;
@@ -89,7 +89,6 @@ public class Usuario implements DbOperation<Usuario> {
 				+ salt + ", tipo=" + tipo + "]";
 	}
 
-	@Override
 	public void create() {
 		try {
 
@@ -112,7 +111,6 @@ public class Usuario implements DbOperation<Usuario> {
 		}
 	}
 
-	@Override
 	public void update() {
 		try {
 			String sqlUpdate = "UPDATE usuario SET passwd = ?,url= ? ,salt = ?,tipo = ?  WHERE nombreUsuario = ?";
@@ -142,7 +140,6 @@ public class Usuario implements DbOperation<Usuario> {
 		}
 	}
 
-	@Override
 	public Usuario read() {
 
 		try {
@@ -166,7 +163,6 @@ public class Usuario implements DbOperation<Usuario> {
 		return this;
 	}
 
-	@Override
 	public void delete() {
 		try {
 			String deleteQuery = "DELETE FROM usuario WHERE nombreUsuario = ?";
@@ -194,9 +190,4 @@ public class Usuario implements DbOperation<Usuario> {
 		}
 	}
 
-	@Override
-	public List<Usuario> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

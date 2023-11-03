@@ -22,18 +22,17 @@ public class EditarPerfil {
 
 	public EditarPerfil(JPanel panelSesion, Usuario userActual) {
 
-		
-		this.url=userActual.getUrl();
-		
+		this.url = userActual.getUrl();
+
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelSesionInferior = new JPanel();
 		panelSesionInferior.setLayout(new GridLayout(5, 2));
-		panelSesionInferior.add(new JLabel("Editar Perfil del usuario: "+userActual.getNombreUsuario()));
+		panelSesionInferior.add(new JLabel("Editar Perfil del usuario: " + userActual.getNombreUsuario()));
 		panelSesionInferior.add(new JLabel());
 		panelSesionInferior.add(new JLabel("Tipo de Usuario:"));
 		tipoComboBox = new JComboBox<>(new String[] { "Cliente", "Tienda" });
 		panelSesionInferior.add(tipoComboBox);
-		
+
 		// Etiqueta y campo de contraseña
 		panelSesionInferior.add(new JLabel("Contraseña:"));
 		contrasenaField = new JPasswordField();
@@ -92,8 +91,8 @@ public class EditarPerfil {
 		eliminarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null,
-						"¿Estás seguro de que deseas eliminar el usuario? Sera eliminada su tienda en caso de poseer una", "Confirmar Eliminación",
-						JOptionPane.YES_NO_OPTION);
+						"¿Estás seguro de que deseas eliminar el usuario? Sera eliminada su tienda en caso de poseer una",
+						"Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
 				if (confirmacion == JOptionPane.YES_OPTION) {
 
 					if ("Tienda".equals(userActual.getTipo())) {

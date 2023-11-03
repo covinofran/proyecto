@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Articulo implements DbOperation<Articulo> {
+public class Articulo {
 	private String nombreTienda;
 	private String nombreArt;
 	private double precio;
@@ -72,7 +72,6 @@ public class Articulo implements DbOperation<Articulo> {
 		this.url = url;
 	}
 
-	@Override
 	public void create() {
 		try {
 			String insertQuery = "INSERT INTO articulo (nombreTienda, nombreArt, precio, cantidad, url) VALUES (?, ?, ?, ?, ?)";
@@ -89,7 +88,6 @@ public class Articulo implements DbOperation<Articulo> {
 		}
 	}
 
-	@Override
 	public Articulo read() {
 		try {
 			String selectQuery = "SELECT * FROM articulo WHERE nombreArt = ?";
@@ -114,7 +112,6 @@ public class Articulo implements DbOperation<Articulo> {
 		return this; // Devuelve la instancia de Articulo actualizada
 	}
 
-	@Override
 	public void update() {
 		try {
 			String updateQuery = "UPDATE articulo SET precio = ?, cantidad = ?, url = ? WHERE nombreArt = ?";
@@ -130,7 +127,6 @@ public class Articulo implements DbOperation<Articulo> {
 		}
 	}
 
-	@Override
 	public void delete() {
 		try {
 			String deleteQuery = "DELETE FROM articulo WHERE nombreArt = ?";
@@ -143,19 +139,20 @@ public class Articulo implements DbOperation<Articulo> {
 		}
 	}
 
-	@Override
 	public List<Articulo> getAll() {
 		List<Articulo> articulos = new ArrayList<>();
-		
+
 		try {
 			PreparedStatement statement = db.prepareStatement(
 
-					"SELECT * FROM articulo Where nombreTienda= ?");
+					"SELECT nombreTienda, nombreArt, precio, url, SUM(cantidad) AS cant FROM articulo WHERE nombreTienda = ? GROUP BY nombreTienda, nombreArt, precio, url");
 			statement.setString(1, nombreTienda);
 			ResultSet resultSet = statement.executeQuery();
 			{
 				while (resultSet.next()) {
-					Articulo articulo= new Articulo(resultSet.getString("nombreTienda"),resultSet.getString("nombreArt"),resultSet.getDouble("precio"),resultSet.getInt("cantidad"),resultSet.getString("url"));
+					Articulo articulo = new Articulo(resultSet.getString("nombreTienda"),
+							resultSet.getString("nombreArt"), resultSet.getDouble("precio"), resultSet.getInt("cant"),
+							resultSet.getString("url"));
 					articulos.add(articulo);
 				}
 			}

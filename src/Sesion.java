@@ -23,7 +23,13 @@ public class Sesion {
 	private JPanel panelSesion;
 	private static Sesion sesion;
 	private Usuario userActual;
-
+	private JLabel imagenPerfil;
+	private JButton cerrarButton;
+	private JButton modificarButton;
+	private JPanel tiendaPanel;
+	private JLabel carrito;
+	private JLabel cantCarrito;
+	
 	// Ventana de sesion ya inciada
 	private Sesion(Usuario userActual) {
 
@@ -34,13 +40,14 @@ public class Sesion {
 
 		ImageIcon logo = new ImageIcon("images\\logo.png");
 		vSesion.setIconImage(logo.getImage());
-		ImageIcon userImagen = new ImageIcon(userActual.getUrl());
 
-		Image rUserImagen = userImagen.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-		ImageIcon imagenFinal = new ImageIcon(rUserImagen);
-		JLabel imagenPerfil = new JLabel(imagenFinal);
+		imagenPerfil = reescalarLabel(userActual.getUrl(), 50, 50);
 
-		JButton cerrarButton = new JButton("Cerrar Sesion");
+		carrito = reescalarLabel("images\\carrito.png", 30, 30);
+		
+		cantCarrito = new JLabel(Integer.toString(userActual.getCarrito().size()));
+
+		cerrarButton = new JButton("Cerrar Sesion");
 		cerrarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salir();
@@ -73,6 +80,12 @@ public class Sesion {
 			}
 		});
 
+		vSesion.add(carrito);
+		carrito.setBounds(51, 10, 30, 30);
+
+		vSesion.add(cantCarrito);
+		cantCarrito.setBounds(82, 30, 10, 10);
+
 		vSesion.add(cerrarButton);
 		vSesion.setLayout(null);
 		vSesion.setBounds(0, 0, 800, 600);
@@ -87,11 +100,11 @@ public class Sesion {
 		vSesion.add(panelSesion);
 		panelSesion.setBounds(0, 150, 800, 400);
 
-		JButton modificarButton = new JButton("Tu Tienda");
+		modificarButton = new JButton("Tu Tienda");
 
 		modificarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				// AGREGAR LAS CARACTERISTICAS DE UNA TIENDA
 				panelSesion.removeAll();
 				panelSesion.revalidate();
@@ -117,11 +130,10 @@ public class Sesion {
 		Tienda tienda = new Tienda(null, null, null);
 		tiendaList = tienda.getAll();
 		for (Tienda datos : tiendaList) {
-			ImageIcon imagenTienda = new ImageIcon(datos.getUrl());
-			Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
-			ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
-			JLabel imageLabel = new JLabel(imagenTiendaF);
+
+			JLabel imageLabel = reescalarLabel(datos.getUrl(), 125, 125);
 			JLabel nombreLabel = new JLabel(datos.getNombreTienda());
+
 			imageLabel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -132,7 +144,7 @@ public class Sesion {
 
 				}
 			});
-			JPanel tiendaPanel = new JPanel();
+			tiendaPanel = new JPanel();
 			tiendaPanel.setLayout(new BoxLayout(tiendaPanel, BoxLayout.Y_AXIS));
 			tiendaPanel.add(imageLabel);
 			tiendaPanel.add(nombreLabel);
@@ -146,6 +158,16 @@ public class Sesion {
 			sesion = new Sesion(userActual);
 		}
 		return sesion;
+	}
+
+	public JLabel reescalarLabel(String path, int x, int y) {
+		// Recibe una ruta de imagen, un ancho y un alto. retorna un label con la imagen
+		// del path y un alto y ancho de x,y
+		ImageIcon imagen = new ImageIcon(path);
+		Image resImagen = imagen.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH);
+		ImageIcon imagenFinal = new ImageIcon(resImagen);
+		JLabel labelFinal = new JLabel(imagenFinal);
+		return labelFinal;
 	}
 
 	public void salir() {

@@ -8,21 +8,25 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class VerTienda {
+	private JPanel panelTiendaActual;
+	private JLabel imageLabel;
+	private JLabel titulo;
+	private JButton comprarButton;
 
 	public VerTienda(Tienda tiendaActual, JPanel panelTienda, Usuario userActual) {
 		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
 
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
-		JPanel panelTiendaActual = new JPanel();
+		panelTiendaActual = new JPanel();
 
 		panelTiendaActual.setLayout(new GridLayout(0, 3));
 
 		ImageIcon imagenTienda = new ImageIcon(tiendaActual.getUrl());
 		Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
 		ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
-		JLabel imageLabel = new JLabel(imagenTiendaF);
+		imageLabel = new JLabel(imagenTiendaF);
 		panelTiendaActual.add(imageLabel);
-		JLabel titulo = new JLabel("Tienda: " + tiendaActual.getNombreTienda());
+		titulo = new JLabel("Tienda: " + tiendaActual.getNombreTienda());
 		panelTiendaActual.add(titulo);
 
 		Map<String, Integer> stock = new HashMap<>();
@@ -87,7 +91,7 @@ public class VerTienda {
 		panelTienda.add(panelTiendaActual);
 
 		// Agregar el panel de la tienda actual al panel principal
-		JButton comprarButton = new JButton("Comprar");
+		comprarButton = new JButton("Comprar");
 		comprarButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// AGREGAR LA COMPRA A LA BASE DE DATOS
@@ -118,6 +122,7 @@ public class VerTienda {
 			}
 		});
 		JButton volverButton = new JButton("Volver");
+		
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				userActual.setCarrito(new ArrayList<>());
