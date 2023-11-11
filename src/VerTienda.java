@@ -12,10 +12,14 @@ public class VerTienda {
 	private JLabel imageLabel;
 	private JLabel titulo;
 	private JButton comprarButton;
+	private CarritoCompras carrito;
 
 	public VerTienda(Tienda tiendaActual, JPanel panelTienda, Usuario userActual) {
-		// System.out.println("Entro a la tienda " + tiendaActual.getnombreTienda());
 
+		carrito = new CarritoCompras(userActual);
+		carrito.setTienda(tiendaActual);
+		Sesion sesion = Sesion.getInstancia(userActual);
+		carrito.registrarObservador(sesion);
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelTiendaActual = new JPanel();
 
@@ -50,10 +54,12 @@ public class VerTienda {
 
 					if (stock.get(articulo.getNombreArt()) > 0) {
 
-						userActual.agregarArticulo(articulo);
+						carrito.agregarArticulo(articulo);
 						stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) - 1);
-
-						for (Articulo articulo : userActual.getCarrito()) {
+						
+						//sesion.actualizarCarrito(carrito.getCarrito());
+						
+						for (Articulo articulo : carrito.getCarrito()) {
 							System.out.println(
 									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
 
@@ -68,10 +74,12 @@ public class VerTienda {
 
 					if (stock.get(articulo.getNombreArt()) < articulo.getCantidad()) {
 
-						userActual.eliminarArticulo(articulo);
+						carrito.eliminarArticulo(articulo);
 						stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) + 1);
-
-						for (Articulo articulo : userActual.getCarrito()) {
+						
+						//sesion.actualizarCarrito(carrito.getCarrito());
+						
+						for (Articulo articulo : carrito.getCarrito()) {
 
 							System.out.println(
 									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
@@ -99,7 +107,7 @@ public class VerTienda {
 				// EN ESTE HASHMAP QUEDA ALMACENADA LA COMPRA DEL USUARIO, ESTO DEBERIA HACER
 				// UNA FACTURA Y ENVIARLO A LA BASE DE DATOS, ADEMAS DE AGREGAR EL STOCK
 				// NEGATIVO ASI SE RESTA DE LA DB
-				for (Articulo articulo : userActual.getCarrito()) {
+				for (Articulo articulo : carrito.getCarrito()) {
 					// SI MAL NO ENTENDI A SANTIAGO DEBERIA CARGAR LOS ARTICULOS DE A UNO QUE COMPRE
 					// PARA QUE CUANDO HAGA UN SUM DE LOS ARTICULOS QUE TRAIGO ME RETORNE EL NUEVO
 					// STOCK
@@ -122,16 +130,17 @@ public class VerTienda {
 			}
 		});
 		JButton volverButton = new JButton("Volver");
-		
+
 		volverButton.addActionListener((ActionListener) new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				userActual.setCarrito(new ArrayList<>());
+				carrito.setCarrito(new ArrayList<>());
 				panelTienda.removeAll();
 				panelTienda.revalidate();
 				panelTienda.repaint();
 				tiendaActual.setArticulos(new ArrayList<>());
-				Sesion sesion = Sesion.getInstancia(userActual);
+				
 				sesion.cargarTiendas();
+				
 			}
 		});
 		panelTiendaActual.add(comprarButton);

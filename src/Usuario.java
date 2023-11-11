@@ -2,10 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Usuario {
@@ -15,7 +12,7 @@ public class Usuario {
 	private String url;
 	private String salt;
 	private String tipo;
-	private List<Articulo> carrito;
+	
 
 	public Usuario(String nombreUsuario, String contraseña, String url, String salt, String tipo) {
 		this.nombreUsuario = nombreUsuario;
@@ -23,7 +20,7 @@ public class Usuario {
 		this.url = url;
 		this.salt = salt;
 		this.tipo = tipo;
-		this.carrito = new ArrayList<>();
+		
 		this.db = DatabaseSingleton.getConexion();
 	}
 
@@ -67,21 +64,6 @@ public class Usuario {
 		this.tipo = tipo;
 	}
 
-	public void agregarArticulo(Articulo articulo) {
-		carrito.add(articulo);
-	}
-
-	public void eliminarArticulo(Articulo articulo) {
-		carrito.remove(articulo);
-	}
-
-	public List<Articulo> getCarrito() {
-		return carrito;
-	}
-
-	public void setCarrito(List<Articulo> carrito) {
-		this.carrito = carrito;
-	}
 
 	@Override
 	public String toString() {
