@@ -46,7 +46,7 @@ public class VerTienda {
 		// Recorrer y mostrar los datos de los artículos
 		for (Articulo articulo : tiendaActual.getArticulos()) {
 
-			if(articulo.getCantidad()>0) {
+			if (articulo.getCantidad() > 0) {
 				JPanel itemPanel = new JPanel();
 				itemPanel.setLayout(new GridBagLayout());
 				itemPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
@@ -125,10 +125,10 @@ public class VerTienda {
 				panelTiendaActual.add(itemPanel);
 			}
 		}
-		
-		
-		
+
 		panelTienda.add(panelTiendaActual);
+		
+	
 
 		// Agregar el panel de la tienda actual al panel principal
 		comprarButton = new JButton("Comprar");
@@ -189,11 +189,12 @@ public class VerTienda {
 		panelTienda.add(panelTiendaActual);
 	}
 
+	
 	private void descontarStock(Map<String, Integer> compra) {
 		for (Map.Entry<String, Integer> entry : compra.entrySet()) {
 			String nombreArticulo = entry.getKey();
 			int cantidad = entry.getValue();
-			Articulo articulo = new Articulo( null,nombreArticulo, 0, 0, null);
+			Articulo articulo = new Articulo(null, nombreArticulo, 0, 0, null);
 			articulo.read();
 			articulo.setCantidad(-cantidad);
 			articulo.create();

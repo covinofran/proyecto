@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 public class EditarPerfil {
@@ -132,6 +133,7 @@ public class EditarPerfil {
 		panelSesionInferior.add(eliminarButton);
 		panelSesionInferior.add(volverButton);
 		panelSesion.add(panelSesionInferior);
+
 	}
 
 	private void browseImage() {
@@ -141,4 +143,5 @@ public class EditarPerfil {
 			url = fileChooser.getSelectedFile().getPath();
 		}
 	}
+
 }

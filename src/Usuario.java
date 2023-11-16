@@ -12,7 +12,6 @@ public class Usuario {
 	private String url;
 	private String salt;
 	private String tipo;
-	
 
 	public Usuario(String nombreUsuario, String contraseña, String url, String salt, String tipo) {
 		this.nombreUsuario = nombreUsuario;
@@ -20,7 +19,7 @@ public class Usuario {
 		this.url = url;
 		this.salt = salt;
 		this.tipo = tipo;
-		
+
 		this.db = DatabaseSingleton.getConexion();
 	}
 
@@ -63,7 +62,6 @@ public class Usuario {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
 
 	@Override
 	public String toString() {

@@ -114,10 +114,12 @@ public class Tienda {
 			preparedStatement.setString(2, nombreUsuario);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
-			JOptionPane.showMessageDialog(null, "Tienda actualizada exitosamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Tienda actualizada exitosamente.", "Alerta",
+					JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error al actualizar los datos.", "Alerta", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error al actualizar los datos.", "Alerta",
+					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -130,6 +132,7 @@ public class Tienda {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al borrar la tienda.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

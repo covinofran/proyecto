@@ -8,12 +8,12 @@ public class Factura {
 	private String nombreTienda;
 	private double total;
 	private Connection db;
-	
+
 	public Factura(String nombreUsuario, String nombreTienda, double total) {
 		this.nombreTienda = nombreTienda;
 		this.nombreUsario = nombreUsuario;
 		this.total = total;
-		this.db= DatabaseSingleton.getConexion();
+		this.db = DatabaseSingleton.getConexion();
 	}
 
 	public String getNombreUsario() {
@@ -41,22 +41,21 @@ public class Factura {
 	}
 
 	public void cargarDB() {
-        
-        String query = "INSERT INTO factura (nombre_usuario, nombre_tienda, total) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = db.prepareStatement(query)) {
-            preparedStatement.setString(1, nombreUsario);
-            preparedStatement.setString(2, nombreTienda);
-            preparedStatement.setDouble(3, total);
+		String query = "INSERT INTO factura (nombre_usuario, nombre_tienda, total) VALUES (?, ?, ?)";
 
-            // Ejecutar la actualización
-            preparedStatement.executeUpdate();
+		try (PreparedStatement preparedStatement = db.prepareStatement(query)) {
+			preparedStatement.setString(1, nombreUsario);
+			preparedStatement.setString(2, nombreTienda);
+			preparedStatement.setDouble(3, total);
 
-            JOptionPane.showMessageDialog(null, "Factura cargada en el sistema.","", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException e) {
-            e.printStackTrace(); 
-            JOptionPane.showMessageDialog(null, "Error al crear el Usuario.", "Alerta", JOptionPane.WARNING_MESSAGE);
-        }
-    }
+			// Ejecutar la actualización
+			preparedStatement.executeUpdate();
+
+			JOptionPane.showMessageDialog(null, "Factura cargada en el sistema.", "", JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al crear el Usuario.", "Alerta", JOptionPane.WARNING_MESSAGE);
+		}
+	}
 }
-

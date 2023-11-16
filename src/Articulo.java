@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Articulo {
 	private String nombreTienda;
 	private String nombreArt;
@@ -83,8 +85,10 @@ public class Articulo {
 			preparedStatement.setString(5, url);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Articulo cargado exitosamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al crear el articulo.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -107,6 +111,7 @@ public class Articulo {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al leer el articulo.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return this; // Devuelve la instancia de Articulo actualizada
@@ -122,8 +127,10 @@ public class Articulo {
 			preparedStatement.setString(4, nombreArt);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Articulo actualizado correctamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al actualizar el articulo.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -134,8 +141,10 @@ public class Articulo {
 			preparedStatement.setString(1, nombreArt);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			JOptionPane.showMessageDialog(null, "Articulo eliminado correctamente.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al borrar el articulo.", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
