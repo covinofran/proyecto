@@ -101,8 +101,9 @@ public class Sesion implements Observer {
 		cargarTiendas();
 		// Agregar el panel de Sesion al JFrame
 		vSesion.add(panelSesion);
-		panelSesion.setBounds(0, 150, 800, 400);
+		panelSesion.setBounds(0, 100, 800, 500);
 
+		// panelSesion.setBackground(Color.LIGHT_GRAY);
 		modificarButton = new JButton("Tu Tienda");
 
 		modificarButton.addActionListener((ActionListener) new ActionListener() {

@@ -1,18 +1,25 @@
 import javax.swing.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class VerTienda {
 	private JPanel panelTiendaActual;
 	private JLabel imageLabel;
-	private JLabel titulo;
 	private JButton comprarButton;
 	private CarritoCompras carrito;
+	private Map<String, Integer> stock;
 
 	public VerTienda(Tienda tiendaActual, JPanel panelTienda, Usuario userActual) {
 
@@ -20,82 +27,107 @@ public class VerTienda {
 		carrito.setTienda(tiendaActual);
 		Sesion sesion = Sesion.getInstancia(userActual);
 		carrito.registrarObservador(sesion);
+
 		// Crea un nuevo JPanel para mostrar los datos de la tienda
 		panelTiendaActual = new JPanel();
+		panelTiendaActual.setLayout(new GridLayout(0, 3, 10, 10));
 
-		panelTiendaActual.setLayout(new GridLayout(0, 3));
-
+		// Configurar la imagen de la tienda
 		ImageIcon imagenTienda = new ImageIcon(tiendaActual.getUrl());
-		Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(135, 135, Image.SCALE_SMOOTH);
+		Image rTiendaImagen = imagenTienda.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		ImageIcon imagenTiendaF = new ImageIcon(rTiendaImagen);
 		imageLabel = new JLabel(imagenTiendaF);
 		panelTiendaActual.add(imageLabel);
-		titulo = new JLabel("Tienda: " + tiendaActual.getNombreTienda());
-		panelTiendaActual.add(titulo);
 
-		Map<String, Integer> stock = new HashMap<>();
+		// Mapa para realizar un seguimiento del stock de cada artículo
+		stock = new HashMap<>();
 		Articulo art = new Articulo(tiendaActual.getNombreTienda(), null, 0, 0, null);
 		tiendaActual.setArticulos(art.getAll());
 		// Recorrer y mostrar los datos de los artículos
 		for (Articulo articulo : tiendaActual.getArticulos()) {
 
-			// Crea un panel para cada artículo
-			JPanel itemPanel = new JPanel();
+			if(articulo.getCantidad()>0) {
+				JPanel itemPanel = new JPanel();
+				itemPanel.setLayout(new GridBagLayout());
+				itemPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+						BorderFactory.createLineBorder(Color.BLACK)));
+				GridBagConstraints gbc = new GridBagConstraints();
+				gbc.anchor = GridBagConstraints.CENTER;
+				gbc.insets = new Insets(5, 5, 5, 5);
 
-			itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
-			JLabel nombreArticulo = new JLabel("Nombre: " + articulo.getNombreArt());
-			JLabel precioArticulo = new JLabel("Precio: " + articulo.getPrecio());
+				JLabel nombreArticulo = new JLabel(articulo.getNombreArt());
+				JLabel precioArticulo = new JLabel("$" + articulo.getPrecio());
+				// Configurar el estilo del nombre del artículo y el precio
+				nombreArticulo.setFont(new Font("Arial", Font.BOLD, 14));
+				nombreArticulo.setForeground(Color.BLUE);
 
-			stock.put(articulo.getNombreArt(), articulo.getCantidad());
+				precioArticulo.setFont(new Font("Arial", Font.PLAIN, 12));
+				precioArticulo.setForeground(Color.DARK_GRAY);
 
-			JButton addButton = new JButton("+");
-			addButton.addActionListener((ActionListener) new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				stock.put(articulo.getNombreArt(), articulo.getCantidad());
 
-					if (stock.get(articulo.getNombreArt()) > 0) {
+				JButton addButton = new JButton("+");
+				addButton.addActionListener((ActionListener) new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
 
-						carrito.agregarArticulo(articulo);
-						stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) - 1);
-						
-						//sesion.actualizarCarrito(carrito.getCarrito());
-						
-						for (Articulo articulo : carrito.getCarrito()) {
-							System.out.println(
-									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
+						// Lógica para agregar un artículo al carrito
+						if (stock.get(articulo.getNombreArt()) > 0) {
 
+							carrito.agregarArticulo(articulo);
+							stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) - 1);
+
+							// sesion.actualizarCarrito(carrito.getCarrito());
+
+							for (Articulo articulo : carrito.getCarrito()) {
+								System.out.println(
+										articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
+
+							}
+							System.out.println("------------------------------------------------");
 						}
-						System.out.println("------------------------------------------------");
 					}
-				}
-			});
-			JButton removeButton = new JButton("-");
-			removeButton.addActionListener((ActionListener) new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				});
+				JButton removeButton = new JButton("-");
+				removeButton.addActionListener((ActionListener) new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// Lógica para eliminar un artículo del carrito
+						if (stock.get(articulo.getNombreArt()) < articulo.getCantidad()) {
 
-					if (stock.get(articulo.getNombreArt()) < articulo.getCantidad()) {
+							carrito.eliminarArticulo(articulo);
+							stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) + 1);
 
-						carrito.eliminarArticulo(articulo);
-						stock.put(articulo.getNombreArt(), stock.get(articulo.getNombreArt()) + 1);
-						
-						//sesion.actualizarCarrito(carrito.getCarrito());
-						
-						for (Articulo articulo : carrito.getCarrito()) {
+							// sesion.actualizarCarrito(carrito.getCarrito());
 
-							System.out.println(
-									articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
+							for (Articulo articulo : carrito.getCarrito()) {
 
+								System.out.println(
+										articulo.getNombreArt() + " - quedan: " + stock.get(articulo.getNombreArt()));
+
+							}
+							System.out.println("------------------------------------------------");
 						}
-						System.out.println("------------------------------------------------");
 					}
-				}
-			});
+				});
 
-			itemPanel.add(nombreArticulo);
-			itemPanel.add(precioArticulo);
-			itemPanel.add(addButton);
-			itemPanel.add(removeButton);
-			panelTiendaActual.add(itemPanel);
+				// Personalizar los botones de agregar y quitar
+				addButton.setBackground(Color.GREEN);
+				addButton.setForeground(Color.WHITE);
+				addButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+				removeButton.setBackground(Color.RED);
+				removeButton.setForeground(Color.WHITE);
+				removeButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+				itemPanel.add(nombreArticulo, gbc);
+				itemPanel.add(precioArticulo, gbc);
+				itemPanel.add(addButton, gbc);
+				itemPanel.add(removeButton, gbc);
+				panelTiendaActual.add(itemPanel);
+			}
 		}
+		
+		
+		
 		panelTienda.add(panelTiendaActual);
 
 		// Agregar el panel de la tienda actual al panel principal
@@ -127,6 +159,10 @@ public class VerTienda {
 
 				}
 				System.out.println(compra);
+				descontarStock(compra);
+				Factura factura = new Factura(userActual.getNombreUsuario(), tiendaActual.getNombreTienda(),
+						calcularTotal(carrito.getCarrito()));
+				factura.cargarDB();
 			}
 		});
 		JButton volverButton = new JButton("Volver");
@@ -138,14 +174,39 @@ public class VerTienda {
 				panelTienda.revalidate();
 				panelTienda.repaint();
 				tiendaActual.setArticulos(new ArrayList<>());
-				
+
 				sesion.cargarTiendas();
-				
+
 			}
 		});
-		panelTiendaActual.add(comprarButton);
-		panelTiendaActual.add(volverButton);
+
+		// Añadir un panel para los botones de compra y volver
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		buttonPanel.add(comprarButton);
+		buttonPanel.add(volverButton);
+		panelTiendaActual.add(buttonPanel);
+
 		panelTienda.add(panelTiendaActual);
 	}
 
+	private void descontarStock(Map<String, Integer> compra) {
+		for (Map.Entry<String, Integer> entry : compra.entrySet()) {
+			String nombreArticulo = entry.getKey();
+			int cantidad = entry.getValue();
+			Articulo articulo = new Articulo( null,nombreArticulo, 0, 0, null);
+			articulo.read();
+			articulo.setCantidad(-cantidad);
+			articulo.create();
+		}
+
+	}
+
+	// Método para calcular el precio total de la compra
+	private double calcularTotal(List<Articulo> articulos) {
+		double precioTotal = 0.0;
+		for (Articulo articulo : articulos) {
+			precioTotal += articulo.getPrecio();
+		}
+		return precioTotal;
+	}
 }

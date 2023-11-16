@@ -108,11 +108,10 @@ public class Tienda {
 
 	public void update() {
 		try {
-			String updateQuery = "UPDATE tienda SET nombreTienda = ?, url = ? WHERE nombreUsuario = ?";
+			String updateQuery = "UPDATE tienda SET url = ? WHERE nombreUsuario = ?";
 			PreparedStatement preparedStatement = db.prepareStatement(updateQuery);
-			preparedStatement.setString(1, nombreTienda);
-			preparedStatement.setString(2, url);
-			preparedStatement.setString(3, nombreUsuario);
+			preparedStatement.setString(1, url);
+			preparedStatement.setString(2, nombreUsuario);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			JOptionPane.showMessageDialog(null, "Tienda actualizada exitosamente.", "Alerta", JOptionPane.WARNING_MESSAGE);

@@ -91,12 +91,30 @@ public class EditarPerfil {
 		eliminarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null,
-						"¿Estás seguro de que deseas eliminar el usuario? Sera eliminada su tienda en caso de poseer una",
+						"¿Estás seguro de que deseas eliminar el usuario? Seran eliminados todos los datos relacionados al mismo",
 						"Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+
+				// VERIFICO SI EL USUARIO DIO QUE SI
 				if (confirmacion == JOptionPane.YES_OPTION) {
 
+					// VERIFICO SI EL USUARIO TIENE TIENDA PARA ELIMINAR
 					if ("Tienda".equals(userActual.getTipo())) {
-						Tienda tienda = new Tienda(null, userActual.getNombreUsuario(), null);
+
+						// TRAIGO LA TIENDA DE LA DB
+						Tienda tienda = new Tienda(userActual.getNombreUsuario(), null, null);
+						tienda.read();
+
+						// TRAIGO LOS ARTICULOS DE LA DB
+						Articulo art = new Articulo(tienda.getNombreTienda(), null, 0, 0, null);
+						tienda.setArticulos(art.getAll());
+
+						// VERIFICO SI LA TIENDA TIENE ARTICULOS PARA ELIMINAR
+						if (!tienda.getArticulos().isEmpty()) {
+							for (Articulo articulo : tienda.getArticulos()) {
+								articulo.delete();
+							}
+						}
+
 						tienda.delete();
 
 					}
